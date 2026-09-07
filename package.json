@@ -1,0 +1,37 @@
+{
+  "name": "alloy-sdk",
+  "version": "1.0.0",
+  "description": "Enterprise-grade LLM Token Optimization & Prompt Caching Middleware",
+  "main": "./alloy.js",
+  "module": "./alloy.js",
+  "types": "./alloy.d.ts",
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./alloy.d.ts",
+      "import": "./alloy.js",
+      "default": "./alloy.js"
+    }
+  },
+  "scripts": {
+    "test": "node --test test/**/*.test.js",
+    "example": "node example.js"
+  },
+  "keywords": [
+    "llm",
+    "token-optimization",
+    "gemini",
+    "openai",
+    "anthropic",
+    "prompt-cache",
+    "kv-cache",
+    "lru-cache",
+    "cost-guardrail"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "@google/genai": "^2.21.0",
+    "dotenv": "^17.4.2"
+  }
+}

@@ -1,0 +1,14 @@
+# Dependencies
+node_modules/
+
+# Environment and secrets
+.env
+.env.local
+*.env
+
+# Logs and system files
+*.log
+.DS_Store
+
+# Temporary scratch files
+scratch/
