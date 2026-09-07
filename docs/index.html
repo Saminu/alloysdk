@@ -19,11 +19,6 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <!-- Ambient background glow effects -->
-  <div class="ambient-glow glow-top-left"></div>
-  <div class="ambient-glow glow-top-right"></div>
-  <div class="ambient-glow glow-bottom-center"></div>
-
   <!-- Navigation -->
   <header class="site-header" id="main-header">
     <div class="header-container">
@@ -84,7 +79,7 @@
         <!-- Metrics Row -->
         <div class="metrics-grid">
           <div class="metric-card">
-            <div class="metric-value gradient-text">20% – 45%</div>
+            <div class="metric-value gradient-text" style="-webkit-text-fill-color: transparent;">20% – 45%</div>
             <div class="metric-label">Single-Call Input Reduction</div>
             <div class="metric-sub">Without losing reasoning quality</div>
           </div>
@@ -192,7 +187,7 @@
         <!-- Live Telemetry Card -->
         <div class="telemetry-bar" id="telemetry-bar">
           <div class="telemetry-item">
-            <div class="telemetry-number text-highlight" id="stat-chars-saved">0</div>
+            <div class="telemetry-number text-accent" id="stat-chars-saved">0</div>
             <div class="telemetry-label">Chars Stripped</div>
           </div>
           <div class="telemetry-divider"></div>
