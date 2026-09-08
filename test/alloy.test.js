@@ -112,7 +112,7 @@ test('LRUCache stores, retrieves, refreshes LRU order, and respects TTL', async 
   assert.equal(cache.get('b'), null);
 });
 
-test('optimizeMessages aligns prefixes correctly (system -> static -> dynamic)', () => {
+test('optimizeMessages preserves conversation order', () => {
   const messages = [
     { role: 'user', content: 'What is the status?' },
     { role: 'user', isStatic: true, content: 'Documentation context: Server is active.' },
@@ -121,10 +121,9 @@ test('optimizeMessages aligns prefixes correctly (system -> static -> dynamic)',
 
   const result = optimizeMessages(messages, { provider: 'openai' });
   assert.equal(result.messages.length, 3);
-  assert.equal(result.messages[0].role, 'system');
-  assert.equal(result.messages[1].role, 'user');
+  assert.equal(result.messages[0].content, 'What is the status?');
   assert.ok(result.messages[1].content.includes('Documentation context'));
-  assert.equal(result.messages[2].content, 'What is the status?');
+  assert.equal(result.messages[2].role, 'system');
   // Internal flags should be stripped for openai
   assert.equal(result.messages[1].isStatic, undefined);
 });
@@ -164,7 +163,11 @@ test('optimizeMessages formats correctly for Anthropic (cache_control breakpoint
 
   const result = optimizeMessages(messages, { provider: 'anthropic' });
 
-  assert.equal(result.systemInstruction, 'System instruction block.');
+  assert.deepEqual(result.systemInstruction, [{
+    type: 'text',
+    text: 'System instruction block.',
+    cache_control: { type: 'ephemeral' }
+  }]);
   assert.equal(result.messages.length, 2);
 
   // Static user message should have cache_control ephemeral
@@ -176,6 +179,39 @@ test('optimizeMessages formats correctly for Anthropic (cache_control breakpoint
   // Dynamic user message should NOT have cache_control
   const dynamicMsg = result.messages[1];
   assert.equal(typeof dynamicMsg.content, 'string');
+});
+
+test('canonical cache keys distinguish Dates and reject non-JSON values', () => {
+  const alloy = new Alloy();
+  const early = alloy.generateCacheKey({ at: new Date('2025-01-01T00:00:00Z') }, 'openai');
+  const late = alloy.generateCacheKey({ at: new Date('2026-01-01T00:00:00Z') }, 'openai');
+  assert.notEqual(early, late);
+  assert.throws(() => alloy.generateCacheKey({ value: new Map() }, 'openai'), TypeError);
+});
+
+test('compressText preserves meaningful YAML indentation', () => {
+  const yaml = 'parent:\n  child: value\n    grandchild: value';
+  assert.equal(compressText(yaml), yaml);
+});
+
+test('Alloy coalesces identical concurrent cacheable calls and bypasses streams', async () => {
+  const alloy = new Alloy();
+  let calls = 0;
+  const api = async () => {
+    calls++;
+    await new Promise(resolve => setTimeout(resolve, 10));
+    return { text: 'ok' };
+  };
+
+  const payload = { messages: [{ role: 'user', content: 'same request' }] };
+  const [first, second] = await Promise.all([alloy.execute(api, payload), alloy.execute(api, payload)]);
+  assert.equal(calls, 1);
+  assert.equal(first._alloyMeta.cacheHit, false);
+  assert.equal(second._alloyMeta.coalesced, true);
+
+  await alloy.execute(api, { ...payload, stream: true });
+  await alloy.execute(api, { ...payload, stream: true });
+  assert.equal(calls, 3);
 });
 
 test('Alloy.optimize provides full telemetry without API execution', () => {

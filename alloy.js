@@ -1,7 +1,7 @@
 /**
  * @file alloy.js
  * @description Enterprise-grade LLM Token Optimization, Context Compression, and Prompt Caching Middleware.
- * Works universally across Node.js, Bun, Deno, and modern Edge/Browser runtimes.
+ * Runs in Node.js and compatible runtimes that provide the Node crypto module.
  */
 
 import crypto from 'node:crypto';
@@ -25,20 +25,36 @@ export const MODEL_PRICING = {
  * @param {any} value
  * @returns {string}
  */
-export function canonicalJsonStringify(value) {
+export function canonicalJsonStringify(value, seen = new Set()) {
   if (value === null || typeof value !== 'object') {
-    return JSON.stringify(value);
+    const serialized = JSON.stringify(value);
+    if (serialized === undefined) {
+      throw new TypeError('Cache keys support JSON values only.');
+    }
+    return serialized;
   }
 
-  if (Array.isArray(value)) {
-    return '[' + value.map(item => canonicalJsonStringify(item)).join(',') + ']';
+  if (value instanceof Date) {
+    if (Number.isNaN(value.getTime())) throw new TypeError('Cannot cache an invalid Date.');
+    return JSON.stringify(value.toJSON());
+  }
+  if (seen.has(value)) throw new TypeError('Cannot cache circular payloads.');
+  if (!Array.isArray(value) && (value instanceof Map || value instanceof Set || (Object.getPrototypeOf(value) !== Object.prototype && Object.getPrototypeOf(value) !== null))) {
+    throw new TypeError('Cache keys support plain JSON objects only.');
   }
 
-  const sortedKeys = Object.keys(value).sort();
-  const pairs = sortedKeys.map(k => {
-    return JSON.stringify(k) + ':' + canonicalJsonStringify(value[k]);
-  });
-  return '{' + pairs.join(',') + '}';
+  seen.add(value);
+  try {
+    if (Array.isArray(value)) {
+      return '[' + value.map(item => canonicalJsonStringify(item, seen)).join(',') + ']';
+    }
+
+    const sortedKeys = Object.keys(value).sort();
+    const pairs = sortedKeys.map(k => JSON.stringify(k) + ':' + canonicalJsonStringify(value[k], seen));
+    return '{' + pairs.join(',') + '}';
+  } finally {
+    seen.delete(value);
+  }
 }
 
 /**
@@ -143,7 +159,7 @@ export function compressText(text, options = {}) {
   if (preserveCodeBlocks) {
     // Matches ```lang ... ``` or ~~~lang ... ~~~
     processed = processed.replace(/(```[\s\S]*?```|~~~[\s\S]*?~~~)/g, (match) => {
-      const token = `__ALLOY_CODE_BLOCK_${codeBlocks.length}__`;
+      const token = `\u0000ALLOY_CODE_BLOCK_${codeBlocks.length}\u0000`;
       codeBlocks.push(match);
       return token;
     });
@@ -170,9 +186,10 @@ export function compressText(text, options = {}) {
     .split('\n')
     .map(line => {
       // If the line is a code block placeholder, leave it untouched
-      if (line.includes('__ALLOY_CODE_BLOCK_')) return line;
-      // Collapse multiple spaces/tabs to a single space
-      return line.replace(/[ \t]+/g, ' ').trimEnd();
+      if (line.includes('\u0000ALLOY_CODE_BLOCK_')) return line;
+      // Preserve leading indentation: it may be meaningful in YAML or indented code.
+      const leadingWhitespace = line.match(/^[ \t]*/)[0];
+      return leadingWhitespace + line.slice(leadingWhitespace.length).replace(/[ \t]{2,}/g, ' ').trimEnd();
     })
     .join('\n');
 
@@ -182,7 +199,7 @@ export function compressText(text, options = {}) {
   // 7. Restore preserved code blocks
   if (preserveCodeBlocks && codeBlocks.length > 0) {
     for (let i = 0; i < codeBlocks.length; i++) {
-      processed = processed.replace(`__ALLOY_CODE_BLOCK_${i}__`, codeBlocks[i]);
+      processed = processed.replace(`\u0000ALLOY_CODE_BLOCK_${i}\u0000`, codeBlocks[i]);
     }
   }
 
@@ -234,8 +251,14 @@ export class LRUCache {
    * @param {number} [options.ttlMs=3600000]
    */
   constructor(options = {}) {
-    this.maxSize = Math.max(1, options.maxSize || 500);
-    this.ttlMs = options.ttlMs || 60 * 60 * 1000;
+    this.maxSize = options.maxSize ?? 500;
+    this.ttlMs = options.ttlMs ?? 60 * 60 * 1000;
+    if (!Number.isInteger(this.maxSize) || this.maxSize < 1) {
+      throw new RangeError('maxSize must be a positive integer.');
+    }
+    if (!Number.isFinite(this.ttlMs) || this.ttlMs < 0) {
+      throw new RangeError('ttlMs must be a non-negative number.');
+    }
     /** @type {Map<string, { data: any, expiresAt: number, size?: number }>} */
     this.cache = new Map();
 
@@ -260,7 +283,7 @@ export class LRUCache {
 
     const entry = this.cache.get(key);
 
-    if (Date.now() > entry.expiresAt) {
+    if (Date.now() >= entry.expiresAt) {
       this.cache.delete(key);
       this.stats.misses++;
       return null;
@@ -309,7 +332,7 @@ export class LRUCache {
   has(key) {
     if (!this.cache.has(key)) return false;
     const entry = this.cache.get(key);
-    if (Date.now() > entry.expiresAt) {
+    if (Date.now() >= entry.expiresAt) {
       this.cache.delete(key);
       return false;
     }
@@ -340,7 +363,7 @@ export class LRUCache {
     const now = Date.now();
     let pruned = 0;
     for (const [key, entry] of this.cache.entries()) {
-      if (now > entry.expiresAt) {
+      if (now >= entry.expiresAt) {
         this.cache.delete(key);
         pruned++;
       }
@@ -369,7 +392,7 @@ export class LRUCache {
  * Optimizes prompt messages for KV-prefix caching and provider-specific schemas.
  * @param {Array<Object>} messages
  * @param {Object} [options={}]
- * @param {'openai'|'anthropic'|'gemini'|'generic'} [options.provider='openai']
+ * @param {'openai'|'anthropic'|'gemini'|'vllm'|'generic'} [options.provider='openai']
  * @param {boolean} [options.preserveCodeBlocks=true]
  * @param {boolean} [options.enableJsonMinification=true]
  * @param {boolean} [options.markdownDeclutter=true]
@@ -415,11 +438,10 @@ export function optimizeMessages(messages = [], options = {}) {
     };
   });
 
-  // 2. Align prefix for KV Caching: [System (0) -> Static (1) -> Conversation (2)]
-  const sorted = [...cleaned].sort((a, b) => {
-    const rank = (m) => (m.role === 'system' ? 0 : m.isStatic ? 1 : 2);
-    return rank(a) - rank(b);
-  });
+  // Never reorder conversational turns: changing their order changes their meaning.
+  // Put static context immediately after system messages when constructing the prompt
+  // to obtain a stable provider-side prefix.
+  const sorted = cleaned;
 
   // 3. Provider-specific transformations
   if (provider === 'gemini') {
@@ -463,6 +485,9 @@ export function formatForGemini(sortedMessages) {
   const geminiContents = nonSystemMessages.map(msg => {
     let role = msg.role;
     if (role === 'assistant') role = 'model';
+    if (role !== 'user' && role !== 'model') {
+      throw new TypeError(`Gemini does not support the '${msg.role}' role in this adapter.`);
+    }
 
     let parts = [];
     if (msg.parts && Array.isArray(msg.parts)) {
@@ -472,7 +497,7 @@ export function formatForGemini(sortedMessages) {
     } else if (Array.isArray(msg.content)) {
       parts = msg.content.map(c => {
         if (typeof c === 'string') return { text: c };
-        if (c.text) return { text: c.text };
+        if (c.text) return { ...c, text: c.text };
         return c;
       });
     } else if (msg.content) {
@@ -503,14 +528,21 @@ export function formatForAnthropic(sortedMessages, maxBreakpoints = 4) {
   const systemMessages = sortedMessages.filter(m => m.role === 'system');
   const nonSystemMessages = sortedMessages.filter(m => m.role !== 'system');
 
+  let breakpointsUsed = 0;
   let systemInstruction;
   if (systemMessages.length > 0) {
-    systemInstruction = systemMessages.map(m => typeof m.content === 'string' ? m.content : JSON.stringify(m.content)).join('\n\n');
+    const systemBlocks = systemMessages.map(m => ({
+      type: 'text',
+      text: typeof m.content === 'string' ? m.content : JSON.stringify(m.content)
+    }));
+    // Anthropic applies a cache breakpoint to a content block; use one on the
+    // final system block, which is the stable prefix users most often reuse.
+    systemBlocks[systemBlocks.length - 1].cache_control = { type: 'ephemeral' };
+    systemInstruction = systemBlocks;
+    breakpointsUsed++;
   }
 
-  let breakpointsUsed = 0;
-
-  const anthropicMessages = nonSystemMessages.map((msg, index) => {
+  const anthropicMessages = nonSystemMessages.map(msg => {
     const shouldCache = (msg.cache === true || msg.isStatic === true) && breakpointsUsed < maxBreakpoints;
     const { isStatic, cache, ...cleanMsg } = msg;
 
@@ -554,7 +586,7 @@ export class Alloy {
    * @param {number} [options.maxCacheSize=500] - Max cache entries.
    * @param {number} [options.cacheTTLMs=3600000] - Cache TTL in ms (default: 1 hr).
    * @param {boolean} [options.enableMemoryCache=true] - Enable local LRU cache.
-   * @param {'openai'|'anthropic'|'gemini'|'generic'} [options.defaultProvider='openai']
+ * @param {'openai'|'anthropic'|'gemini'|'vllm'|'generic'} [options.defaultProvider='openai']
    * @param {string} [options.defaultModel='gemini-2.5-flash'] - Target model name for pricing telemetry.
    * @param {boolean} [options.enableJsonMinification=true] - Minify embedded JSON.
    * @param {boolean} [options.preserveCodeBlocks=true] - Preserve code block indentation.
@@ -564,18 +596,22 @@ export class Alloy {
    */
   constructor(options = {}) {
     this.enableMemoryCache = options.enableMemoryCache !== false;
-    this.defaultProvider = options.defaultProvider || 'openai';
-    this.defaultModel = options.defaultModel || 'gemini-2.5-flash';
-    this.defaultMaxTokens = options.defaultMaxTokens || 256;
+    this.defaultProvider = options.defaultProvider ?? 'openai';
+    this.defaultModel = options.defaultModel ?? 'gemini-2.5-flash';
+    this.defaultMaxTokens = options.defaultMaxTokens ?? 256;
+    if (!Number.isInteger(this.defaultMaxTokens) || this.defaultMaxTokens < 1) {
+      throw new RangeError('defaultMaxTokens must be a positive integer.');
+    }
     this.preserveCodeBlocks = options.preserveCodeBlocks !== false;
     this.enableJsonMinification = options.enableJsonMinification !== false;
     this.markdownDeclutter = options.markdownDeclutter !== false;
     this.pricingOverride = options.pricing;
 
     this.cache = new LRUCache({
-      maxSize: options.maxCacheSize || 500,
-      ttlMs: options.cacheTTLMs || 60 * 60 * 1000
+      maxSize: options.maxCacheSize ?? 500,
+      ttlMs: options.cacheTTLMs ?? 60 * 60 * 1000
     });
+    this.inFlight = new Map();
 
     // Cumulative stats
     this.cumulativeStats = {
@@ -668,7 +704,7 @@ export class Alloy {
    * @param {(payload: Object) => Promise<T>} apiCallFn - Function executing the API call.
    * @param {Object} payload - Input payload ({ messages, contents, ... }).
    * @param {Object} [options={}]
-   * @param {'openai'|'anthropic'|'gemini'|'generic'} [options.provider]
+   * @param {'openai'|'anthropic'|'gemini'|'vllm'|'generic'} [options.provider]
    * @param {string} [options.model]
    * @param {number} [options.maxTokens]
    * @param {boolean} [options.skipCache=false]
@@ -687,7 +723,10 @@ export class Alloy {
       provider
     });
 
-    const maxTokens = payload.max_tokens || payload.maxOutputTokens || options.maxTokens || this.defaultMaxTokens;
+    const maxTokens = options.maxTokens ?? payload.max_tokens ?? payload.maxOutputTokens ?? this.defaultMaxTokens;
+    if (!Number.isInteger(maxTokens) || maxTokens < 1) {
+      throw new RangeError('maxTokens must be a positive integer.');
+    }
 
     // Construct final payload according to provider
     const finalPayload = {
@@ -707,9 +746,18 @@ export class Alloy {
 
     this.cumulativeStats.totalRequests++;
 
-    // 2. Cache Check
-    const cacheKey = this.generateCacheKey(finalPayload, provider);
-    if (this.enableMemoryCache && !options.skipCache) {
+    // 2. Cache Check. Streams and tool/function calls are not safe to replay.
+    const cacheAllowed = this.enableMemoryCache && !options.skipCache && options.cacheable !== false
+      && !payload.stream && !payload.tools && !payload.functions;
+    let cacheKey = null;
+    if (cacheAllowed) {
+      try {
+        cacheKey = this.generateCacheKey(finalPayload, provider);
+      } catch {
+        // Non-JSON payloads are still valid for a provider, but must not be cached.
+      }
+    }
+    if (cacheKey) {
       const cached = this.cache.get(cacheKey);
       if (cached !== null) {
         const executionTimeMs = Math.round(performance.now() - startTime);
@@ -734,14 +782,46 @@ export class Alloy {
           }
         };
       }
+
+      const pending = this.inFlight.get(cacheKey);
+      if (pending) {
+        const response = await pending;
+        const executionTimeMs = Math.round(performance.now() - startTime);
+        const costSavedUSD = Number(((telemetry.rawTokens / 1_000_000) * pricing.inputPer1M).toFixed(6));
+        this.cumulativeStats.totalTokensSaved += telemetry.rawTokens;
+        this.cumulativeStats.totalCostSavedUSD += costSavedUSD;
+        return {
+          ...response,
+          _alloyMeta: {
+            cacheHit: true,
+            coalesced: true,
+            provider,
+            model,
+            executionTimeMs,
+            rawTokens: telemetry.rawTokens,
+            optimizedTokens: 0,
+            savedTokens: telemetry.rawTokens,
+            reductionPercent: 100.0,
+            costSavedUSD,
+            cacheStats: this.cache.getStats()
+          }
+        };
+      }
     }
 
     // 3. Execute network request
-    const response = await apiCallFn(finalPayload);
+    const request = Promise.resolve().then(() => apiCallFn(finalPayload));
+    if (cacheKey) this.inFlight.set(cacheKey, request);
+    let response;
+    try {
+      response = await request;
+    } finally {
+      if (cacheKey) this.inFlight.delete(cacheKey);
+    }
     const executionTimeMs = Math.round(performance.now() - startTime);
 
     // 4. Save to cache
-    if (this.enableMemoryCache && !options.skipCache) {
+    if (cacheKey) {
       this.cache.set(cacheKey, response, options.cacheTTLMs);
     }
 

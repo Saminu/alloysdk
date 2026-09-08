@@ -3,7 +3,7 @@
  * TypeScript declarations for Alloy SDK.
  */
 
-export type ProviderType = 'openai' | 'anthropic' | 'gemini' | 'generic';
+export type ProviderType = 'openai' | 'anthropic' | 'gemini' | 'vllm' | 'generic';
 
 export interface ModelPricing {
   inputPer1M: number;
@@ -60,6 +60,7 @@ export interface CacheStats {
 
 export interface AlloyMeta {
   cacheHit: boolean;
+  coalesced?: boolean;
   provider: ProviderType;
   model: string;
   executionTimeMs: number;
@@ -82,6 +83,8 @@ export interface ExecuteOptions extends AlloyOptimizationOptions {
   maxTokens?: number;
   skipCache?: boolean;
   cacheTTLMs?: number;
+  /** Set false for calls that must never be replayed from the local cache. */
+  cacheable?: boolean;
 }
 
 export declare const MODEL_PRICING: Record<string, ModelPricing>;
@@ -131,6 +134,7 @@ export declare class Alloy {
   preserveCodeBlocks: boolean;
   enableJsonMinification: boolean;
   markdownDeclutter: boolean;
+  inFlight: Map<string, Promise<any>>;
 
   generateCacheKey(payload: any, provider: string): string;
   getPricing(modelName?: string): ModelPricing;

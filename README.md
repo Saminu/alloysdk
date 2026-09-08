@@ -1,24 +1,25 @@
 # Alloy.js ⚡
 > **Enterprise-Grade Token Optimization, Context Compression & Prompt Caching Middleware for LLMs**
 
-Alloy is a lightweight, zero-dependency middleware library that sits between your enterprise application and LLM inference endpoints (**Google Gemini**, **OpenAI**, **Anthropic**, and self-hosted **vLLM** models).
+Alloy is a lightweight Node.js middleware library that sits between your enterprise application and LLM inference endpoints (**Google Gemini**, **OpenAI**, **Anthropic**, and self-hosted **vLLM** models).
 
-By combining **AST/code-safe text compression**, **embedded JSON minification**, **KV-cache prefix alignment**, **true LRU local memory caching**, and **deterministic output budgeting**, Alloy cuts LLM input payloads by **20% to 45%** on single calls and slashes API expenditures by up to **62%** with zero degradation in reasoning quality.
+By combining conservative text compression, embedded JSON minification, local response caching, and output budgeting, Alloy reduces avoidable prompt overhead while preserving message order. Measure savings against your provider’s usage data before making cost commitments.
 
 ---
 
 ## 🚀 Key Features
 
-* **Zero Dependencies**: Pure ECMAScript using native Node.js crypto / universal WebCrypto. Works across Node.js, Bun, Deno, and Edge environments.
-* **Code-Safe Context Compression**: Strips structural whitespace and indentation while **strictly preserving code blocks** (```` ```python ... ``` ````) and YAML formats.
+* **Node.js Runtime**: Pure ECMAScript with native Node.js crypto. The browser playground is a separate, credential-free demonstration build.
+* **Conservative Context Compression**: Minifies embedded JSON and redundant prose spacing while preserving fenced blocks and leading indentation (including YAML).
 * **Embedded JSON Minifier**: Detects and minifies JSON payloads embedded inside natural language prompts, stripping formatting padding and newlines.
-* **KV-Cache Prefix Alignment**: Reorders messages to anchor system instructions and invariant static context (`isStatic: true`) to maximize provider-side KV-cache hits.
+* **KV-Cache-Friendly Prefixes**: Preserves message order. Place system instructions and invariant static context (`isStatic: true`) first to maximize provider-side prefix reuse.
 * **True LRU Memory Cache**: Key-order-agnostic SHA-256 cache with sub-millisecond lookups, TTL expiration, and automatic eviction.
 * **Multi-Provider Adapters**:
   * **Google Gemini**: Automatically maps `role: 'assistant'` $\rightarrow$ `'model'`, packages `{ role, parts: [{ text }] }`, and isolates `systemInstruction`.
   * **Anthropic Claude**: Automatically manages up to 4 ephemeral `cache_control: { type: 'ephemeral' }` breakpoints on static content.
   * **OpenAI / Generic**: Strict KV prefix sequencing and payload normalization.
-* **Token & Cost Telemetry**: Built-in subword token estimator and pricing catalog (Gemini 2.5 Flash, GPT-4o, Claude 3.5 Sonnet) computing exact dollar savings per call.
+  * **vLLM**: OpenAI-compatible payloads for self-hosted serving. Keep invariant context at the beginning of each request so vLLM Automatic Prefix Caching can reuse its KV blocks.
+* **Token & Cost Telemetry**: Built-in token and cost estimates; replace the price catalog or use provider usage metadata for billing-grade numbers.
 * **Full TypeScript Definitions**: Shipped with complete `alloy.d.ts` declarations.
 
 ---
@@ -137,6 +138,32 @@ const response = await alloy.execute(
 );
 ```
 
+#### vLLM OpenAI-Compatible Server
+
+Alloy’s `vllm` provider uses the same message shape as OpenAI. It does not reorder conversation history; place your system and static RAG context first so vLLM can reuse the stable prefix.
+
+```javascript
+import OpenAI from 'openai';
+import { Alloy } from 'alloy-sdk';
+
+const vllm = new OpenAI({ baseURL: 'http://localhost:8000/v1', apiKey: 'local' });
+const alloy = new Alloy({ defaultProvider: 'vllm', defaultModel: 'meta-llama/Llama-3.1-8B-Instruct' });
+
+const response = await alloy.execute(
+  payload => vllm.chat.completions.create(payload),
+  {
+    messages: [
+      { role: 'system', content: 'You are a concise support assistant.' },
+      { role: 'user', isStatic: true, content: 'Product reference: ...' },
+      { role: 'user', content: 'How do I reset my password?' }
+    ]
+  },
+  { provider: 'vllm', cacheable: true }
+);
+```
+
+For high-throughput deployments, use Alloy’s local cache only for safe, non-streaming idempotent requests; vLLM’s server-side automatic prefix cache handles reusable prompt KV state.
+
 ---
 
 ## 📊 Benchmark & Cost Analysis
@@ -162,7 +189,7 @@ new Alloy({
   cacheTTLMs: 3600000,          // Cache expiration time in ms (default: 1 hour)
 
   // Providers & Models
-  defaultProvider: 'gemini',    // 'gemini' | 'openai' | 'anthropic' | 'generic'
+  defaultProvider: 'gemini',    // 'gemini' | 'openai' | 'anthropic' | 'vllm' | 'generic'
   defaultModel: 'gemini-2.5-flash',
   defaultMaxTokens: 256,        // Output token budget cap
 
@@ -181,6 +208,12 @@ Run the native Node.js test suite:
 
 ```bash
 npm test
+```
+
+Run the local benchmark (1,000 iterations; no API credentials required):
+
+```bash
+npm run benchmark
 ```
 
 Run the live demonstration:

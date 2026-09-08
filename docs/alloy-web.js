@@ -92,7 +92,7 @@ export function compressText(text, options = {}) {
 
   if (preserveCodeBlocks) {
     processed = processed.replace(/(```[\s\S]*?```|~~~[\s\S]*?~~~)/g, (match) => {
-      const token = `__ALLOY_CODE_BLOCK_${codeBlocks.length}__`;
+      const token = `\u0000ALLOY_CODE_BLOCK_${codeBlocks.length}\u0000`;
       codeBlocks.push(match);
       return token;
     });
@@ -112,8 +112,9 @@ export function compressText(text, options = {}) {
   processed = processed
     .split('\n')
     .map(line => {
-      if (line.includes('__ALLOY_CODE_BLOCK_')) return line;
-      return line.replace(/[ \t]+/g, ' ').trimEnd();
+      if (line.includes('\u0000ALLOY_CODE_BLOCK_')) return line;
+      const leadingWhitespace = line.match(/^[ \t]*/)[0];
+      return leadingWhitespace + line.slice(leadingWhitespace.length).replace(/[ \t]{2,}/g, ' ').trimEnd();
     })
     .join('\n');
 
@@ -121,7 +122,7 @@ export function compressText(text, options = {}) {
 
   if (preserveCodeBlocks && codeBlocks.length > 0) {
     for (let i = 0; i < codeBlocks.length; i++) {
-      processed = processed.replace(`__ALLOY_CODE_BLOCK_${i}__`, codeBlocks[i]);
+      processed = processed.replace(`\u0000ALLOY_CODE_BLOCK_${i}\u0000`, codeBlocks[i]);
     }
   }
 
@@ -156,10 +157,9 @@ export function optimizePayload(messages, provider = 'gemini', options = {}) {
     content: typeof msg.content === 'string' ? compressText(msg.content, options) : msg.content
   }));
 
-  const sorted = [...cleaned].sort((a, b) => {
-    const rank = (m) => (m.role === 'system' ? 0 : m.isStatic ? 1 : 2);
-    return rank(a) - rank(b);
-  });
+  // Preserve conversation order. Static context belongs directly after the
+  // system prompt when callers build a cacheable prefix.
+  const sorted = cleaned;
 
   if (provider === 'gemini') {
     const system = sorted.filter(m => m.role === 'system');
@@ -195,9 +195,41 @@ export function optimizePayload(messages, provider = 'gemini', options = {}) {
     };
   }
 
-  // OpenAI
+  // OpenAI and vLLM's OpenAI-compatible server.
   return {
     provider,
     messages: sorted.map(({ isStatic, cache, ...rest }) => rest)
+  };
+}
+
+/** Run a credential-free smoke test of the browser implementation. */
+export async function runLiveTest() {
+  const started = performance.now();
+  const checks = [];
+  const yaml = 'parent:\n  child: value\n    grandchild: value';
+  checks.push({ name: 'Preserves YAML indentation', passed: compressText(yaml) === yaml });
+
+  const ordered = optimizePayload([
+    { role: 'user', content: 'first' },
+    { role: 'assistant', content: 'reply' },
+    { role: 'user', isStatic: true, content: 'late context' }
+  ], 'openai').messages.map(message => message.content);
+  checks.push({ name: 'Preserves conversation order', passed: ordered.join('|') === 'first|reply|late context' });
+
+  let calls = 0;
+  let pending;
+  const request = async () => {
+    if (!pending) {
+      pending = Promise.resolve().then(() => ({ calls: ++calls }));
+    }
+    return pending;
+  };
+  await Promise.all([request(), request()]);
+  checks.push({ name: 'Coalesces duplicate requests', passed: calls === 1 });
+
+  return {
+    passed: checks.every(check => check.passed),
+    checks,
+    durationMs: Math.round((performance.now() - started) * 100) / 100
   };
 }

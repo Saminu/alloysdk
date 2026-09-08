@@ -7,6 +7,7 @@ import {
   compressText,
   estimateTokens,
   optimizePayload,
+  runLiveTest,
   MODEL_PRICING
 } from './alloy-web.js';
 
@@ -163,6 +164,8 @@ const optimizedTokenBadge = document.getElementById('optimized-token-badge');
 const optimizedOutput = document.getElementById('optimized-output');
 const providerOutputBadge = document.getElementById('provider-output-badge');
 const btnCopyOptimized = document.getElementById('btn-copy-optimized');
+const btnRunLiveTest = document.getElementById('btn-run-live-test');
+const liveTestResult = document.getElementById('live-test-result');
 
 // Telemetry Elements
 const statCharsSaved = document.getElementById('stat-chars-saved');
@@ -225,6 +228,9 @@ function runPlaygroundOptimization() {
   } else if (provider === 'anthropic') {
     formattedOutput = JSON.stringify(optimizedPayloadResult, null, 2);
     providerOutputBadge.textContent = 'Anthropic Ephemeral';
+  } else if (provider === 'vllm') {
+    formattedOutput = JSON.stringify(optimizedPayloadResult, null, 2);
+    providerOutputBadge.textContent = 'vLLM OpenAI Format';
   } else {
     formattedOutput = JSON.stringify(optimizedPayloadResult, null, 2);
     providerOutputBadge.textContent = 'OpenAI Format';
@@ -252,6 +258,23 @@ function runPlaygroundOptimization() {
   statTokensSaved.textContent = tokensSaved.toLocaleString();
   statPercentSaved.textContent = `${percentSaved}%`;
   statCostSaved.textContent = `$${costSaved1M.toFixed(2)}`;
+}
+
+async function runBrowserSmokeTest() {
+  btnRunLiveTest.disabled = true;
+  btnRunLiveTest.textContent = 'Running…';
+  liveTestResult.textContent = 'Executing browser smoke tests…';
+  try {
+    const result = await runLiveTest();
+    liveTestResult.textContent = `${result.passed ? '✓ Passed' : '✕ Failed'} · ${result.checks.filter(check => check.passed).length}/${result.checks.length} checks · ${result.durationMs} ms\n${result.checks.map(check => `${check.passed ? '✓' : '✕'} ${check.name}`).join('\n')}`;
+    liveTestResult.classList.toggle('failed', !result.passed);
+  } catch (error) {
+    liveTestResult.textContent = `✕ Failed: ${error.message}`;
+    liveTestResult.classList.add('failed');
+  } finally {
+    btnRunLiveTest.disabled = false;
+    btnRunLiveTest.textContent = 'Run Browser Smoke Test';
+  }
 }
 
 // 2. ROI Calculator Handler
@@ -329,6 +352,7 @@ btnCopyOptimized.addEventListener('click', async () => {
     console.error('Clipboard copy failed:', err);
   }
 });
+btnRunLiveTest.addEventListener('click', runBrowserSmokeTest);
 
 // 5. Preset Change
 presetSelect.addEventListener('change', () => {
