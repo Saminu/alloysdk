@@ -1,0 +1,14 @@
+# Cloud Build config to build and push the alloyAPI service
+steps:
+  - name: "gcr.io/cloud-builders/docker"
+    args:
+      # Build using the Dockerfile in alloyAPI/
+      - build
+      - -f
+      - alloyAPI/Dockerfile
+      - -t
+      - gcr.io/$PROJECT_ID/alloy-api:latest
+      - alloyAPI
+images:
+  # Push the image to Artifact Registry
+  - gcr.io/$PROJECT_ID/alloy-api:latest
