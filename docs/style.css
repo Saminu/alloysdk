@@ -23,6 +23,16 @@
   color: var(--muted);
   line-height: 1.5;
 }
+/* Marketplace section */
+.marketplace-list ul {
+  list-style: disc;
+  margin: 1rem 0 0 2rem;
+  color: var(--ink-2);
+}
+.marketplace-list li {
+  margin-bottom: 0.75rem;
+  font-size: 1rem;
+}
 :root { --ink:#07172a; --ink-2:#0c213b; --paper:#f1f1ed; --white:#fafaf7; --line:#28415c; --muted:#a9b7c9; --blue:#1f7af2; --green:#18b780; --orange:#ed6845; --mono:'DM Mono', monospace; --sans:'DM Sans', sans-serif; --serif:'Libre Baskerville', serif; }
 * { box-sizing:border-box; } html { scroll-behavior:smooth; } body { margin:0; background:var(--paper); color:var(--ink); font-family:var(--sans); } a { color:inherit; } .notice-bar { height:36px; display:flex; justify-content:center; align-items:center; gap:14px; background:#284762; color:#d7e1ec; font:12px/1 var(--mono); letter-spacing:.12em; } .notice-bar span { color:#fff; }
 .site-header { height:76px; padding:0 clamp(22px,5vw,76px); display:flex; align-items:center; gap:34px; background:#07172a; color:#e8edf4; border-bottom:1px solid #29445e; } .brand { display:inline-flex; align-items:center; gap:10px; text-decoration:none; font:700 25px/1 var(--sans); letter-spacing:-.06em; white-space:nowrap; } .brand > span > span { color:#5fa2ff; } .brand-mark { width:29px; height:29px; fill:none; stroke:currentColor; stroke-width:2.4; stroke-linecap:round; stroke-linejoin:round; } .nav { display:flex; gap:30px; margin-left:28px; } .nav a { text-decoration:none; color:#bdc9d6; font:12px var(--mono); letter-spacing:.12em; text-transform:uppercase; } .nav a:hover { color:#fff; } .nav-cta { margin-left:auto; padding:13px 17px; background:#edf0ef; color:#102039; text-decoration:none; font:12px var(--mono); letter-spacing:.08em; text-transform:uppercase; } .nav-cta span { margin-left:8px; color:#176ee1; }
