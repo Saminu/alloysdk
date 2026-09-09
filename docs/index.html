@@ -3,643 +3,82 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Alloy.js | Intelligent Token Optimization &amp; Prompt Caching for LLMs</title>
-  <meta name="description" content="Alloy is a lightweight zero-dependency middleware that cuts LLM input tokens by 20% to 45%, enables 0ms caching, and reduces API spend by up to 62% across Gemini, OpenAI, and Anthropic.">
-  <meta name="keywords" content="LLM token optimization, prompt caching, Gemini 2.5 Flash, OpenAI KV cache, prompt compression, AI cost reduction">
-  <meta property="og:title" content="Alloy.js - Enterprise LLM Token Optimization Layer">
-  <meta property="og:description" content="Reduce enterprise LLM token spend by 20% to 62% with drop-in AST compression, JSON minification, and KV-cache prefix alignment.">
-  <meta property="og:type" content="website">
-  <meta property="og:url" content="https://saminu.github.io/alloysdk/">
-
-  <!-- Google Fonts: Outfit & Inter & JetBrains Mono -->
+  <title>alloySDK — Intentional token infrastructure</title>
+  <meta name="description" content="alloySDK is a lightweight Node.js middleware layer for prompt optimization, safe response caching, and provider-ready LLM payloads.">
+  <meta name="theme-color" content="#06172a">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Outfit:wght@500;600;700;800;900&display=swap" rel="stylesheet">
-  
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;600;700&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <!-- Ambient background glow effects -->
-  <div class="ambient-glow glow-top-left"></div>
-  <div class="ambient-glow glow-top-right"></div>
-  <div class="ambient-glow glow-bottom-center"></div>
-
-  <!-- Navigation -->
-  <header class="site-header" id="main-header">
-    <div class="header-container">
-      <a href="#" class="logo-group" id="logo-link">
-        <div class="logo-badge">⚡</div>
-        <div class="logo-text">
-          <span class="logo-title">Alloy<span class="logo-ext">.js</span></span>
-          <span class="logo-tag">Enterprise SDK</span>
-        </div>
-      </a>
-
-      <nav class="main-nav" id="main-nav">
-        <a href="#playground" class="nav-link" id="nav-playground">Live Playground</a>
-        <a href="#benchmarks" class="nav-link" id="nav-benchmarks">Live Benchmarks</a>
-        <a href="#calculator" class="nav-link" id="nav-calculator">ROI Calculator</a>
-        <a href="#quickstart" class="nav-link" id="nav-quickstart">Docs</a>
-        <a href="https://github.com/Saminu/alloysdk" target="_blank" rel="noopener noreferrer" class="btn btn-github" id="btn-github-nav">
-          <svg class="github-icon" width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
-            <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/>
-          </svg>
-          <span>Star on GitHub</span>
-        </a>
-      </nav>
-    </div>
+  <div class="notice-bar"><span>[ NEW ]</span> alloySDK supports vLLM-compatible payloads and safe request coalescing.</div>
+  <header class="site-header">
+    <a class="brand" href="#top" aria-label="alloySDK home"><svg class="brand-mark" viewBox="0 0 32 32" aria-hidden="true"><path d="M7 24 16 5l9 19h-5.2L16 15.5 12.2 24Z"/><path d="M13.8 19h4.4"/></svg><span>alloy<span>SDK</span></span></a>
+    <nav class="nav" aria-label="Primary navigation"><a href="#playground">Playground</a><a href="#architecture">Architecture</a><a href="#integration">Integration</a></nav>
+    <a class="nav-cta" href="https://github.com/Saminu/alloysdk" target="_blank" rel="noopener noreferrer">View on GitHub <span>↗</span></a>
   </header>
-
-  <main>
-    <!-- Hero Section -->
-    <section class="hero-section" id="hero">
-      <div class="hero-container">
-        <div class="hero-badge-container">
-          <span class="status-pill">
-            <span class="status-dot"></span> Production Ready • Zero Dependencies
-          </span>
-          <span class="status-pill highlight">
-            ⚡ Tested on Google Gemini 2.5 Flash
-          </span>
-        </div>
-
-        <h1 class="hero-heading" id="hero-title">
-          The Intelligent Token-Optimization &amp; Guardrail Layer for <span class="gradient-text">Enterprise LLMs</span>
-        </h1>
-
-        <p class="hero-subtitle" id="hero-subtitle">
-          Alloy sits directly between client apps and inference APIs. By applying code-safe AST context compression, embedded JSON minification, and KV-cache prefix alignment, Alloy cuts token input payloads by <strong>20% to 45%</strong> and slashes production LLM costs by up to <strong>62%</strong>.
-        </p>
-
-        <div class="hero-cta-group">
-          <a href="#playground" class="btn btn-primary btn-large" id="hero-cta-playground">
-            <span>Open Interactive Playground</span>
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-          </a>
-          <a href="#quickstart" class="btn btn-secondary btn-large" id="hero-cta-quickstart">
-            <span>Install &amp; Quickstart</span>
-          </a>
-        </div>
-
-        <!-- Metrics Row -->
-        <div class="metrics-grid">
-          <div class="metric-card">
-            <div class="metric-value gradient-text">20% – 45%</div>
-            <div class="metric-label">Single-Call Input Reduction</div>
-            <div class="metric-sub">Without losing reasoning quality</div>
-          </div>
-          <div class="metric-card">
-            <div class="metric-value text-accent">0 ms ⚡</div>
-            <div class="metric-label">Deterministic Local Cache</div>
-            <div class="metric-sub">100% token savings on repeat hits</div>
-          </div>
-          <div class="metric-card">
-            <div class="metric-value gradient-text">56.8%</div>
-            <div class="metric-label">Net API Cost Reduction</div>
-            <div class="metric-sub">Empirically verified on Gemini</div>
-          </div>
-          <div class="metric-card">
-            <div class="metric-value text-highlight">0 KB</div>
-            <div class="metric-label">External Dependencies</div>
-            <div class="metric-sub">Native Node &amp; Edge runtime</div>
-          </div>
-        </div>
+  <main id="top">
+    <section class="hero">
+      <div class="hero-copy">
+        <p class="eyebrow"><i></i> TOKEN INFRASTRUCTURE</p>
+        <h1>Optimize context.<br><em>Preserve intent.</em></h1>
+        <p class="hero-description">alloySDK is a focused middleware layer that turns noisy LLM requests into lean, provider-ready payloads—without altering the meaning or chronology of a conversation.</p>
+        <div class="hero-actions"><a href="#playground" class="button button-primary">Explore the playground <span>→</span></a><a href="#integration" class="button button-quiet">Read the docs</a></div>
+        <div class="hero-tags"><span>Node.js</span><span>OpenAI-compatible</span><span>vLLM-ready</span></div>
+      </div>
+      <div class="hero-visual" aria-label="alloySDK optimization flow">
+        <div class="visual-topline"><span>REQUEST SIGNAL</span><span>LIVE</span></div>
+        <div class="signal-lines"><span></span><span></span><span></span><span></span><span></span></div>
+        <div class="signal-flow"><div><b>01</b><span>normalize context</span><small>JSON · whitespace</small></div><div><b>02</b><span>validate identity</span><small>stable cache key</small></div><div><b>03</b><span>dispatch cleanly</span><small>provider payload</small></div></div>
+        <div class="visual-footer"><span>EST. OVERHEAD REMOVED</span><strong id="hero-savings">—</strong></div>
       </div>
     </section>
-
-    <!-- Interactive Live Playground -->
-    <section class="section playground-section" id="playground">
-      <div class="section-container">
-        <div class="section-header">
-          <span class="section-eyebrow">TRY IT LIVE IN BROWSER</span>
-          <h2 class="section-title">Interactive Token Compression Playground</h2>
-          <p class="section-description">
-            Experience Alloy's context compression and JSON minification running client-side right in your browser. Select an enterprise preset or paste your own raw prompt.
-          </p>
+    <section class="proof-strip" aria-label="alloySDK properties"><p><i></i> DESIGNED FOR REPEATABLE, INSPECTABLE LLM REQUESTS</p><div><span>JSON MINIFICATION</span><span>LRU + TTL</span><span>ORDER-PRESERVING</span><span>REQUEST COALESCING</span></div></section>
+    <section class="section playground" id="playground">
+      <div class="section-intro"><p class="eyebrow"><i></i> IN BROWSER</p><h2>See the request<br>before it leaves.</h2><p>Paste a prompt, choose a target, and inspect the transformed payload. Everything on this page runs locally—no API key or prompt is sent anywhere.</p></div>
+      <div class="playground-workbench">
+        <div class="control-row">
+          <label>EXAMPLE<select id="preset-select"><option value="underwriting">Underwriting payload</option><option value="devops">DevOps context</option><option value="medical">Clinical record</option><option value="rag">RAG context</option></select></label>
+          <label>TARGET<select id="provider-select"><option value="gemini">Google Gemini</option><option value="anthropic">Anthropic Claude</option><option value="openai">OpenAI</option><option value="vllm">vLLM</option></select></label>
+          <div class="toggles" aria-label="Optimization options"><label><input type="checkbox" id="toggle-code" checked> Code blocks</label><label><input type="checkbox" id="toggle-json" checked> JSON</label><label><input type="checkbox" id="toggle-markdown" checked> Markdown</label></div>
         </div>
-
-        <!-- Playground Controls Bar -->
-        <div class="playground-controls">
-          <div class="control-group">
-            <label for="preset-select" class="control-label">Load Template:</label>
-            <select id="preset-select" class="select-input">
-              <option value="underwriting">Enterprise Underwriting (JSON + Profile)</option>
-              <option value="devops">DevOps Cloud Architecture (Code Block)</option>
-              <option value="medical">Medical Patient Assessment</option>
-              <option value="rag">Multi-Turn RAG Context</option>
-            </select>
-          </div>
-
-          <div class="control-group">
-            <label for="provider-select" class="control-label">Target Provider:</label>
-            <select id="provider-select" class="select-input">
-              <option value="gemini">Google Gemini (assistant ➔ model, parts, system)</option>
-              <option value="anthropic">Anthropic Claude (cache_control ephemeral)</option>
-              <option value="openai">OpenAI (Strict KV Prefix Order)</option>
-            </select>
-          </div>
-
-          <div class="control-toggles">
-            <label class="toggle-label" title="Preserve formatting inside code blocks">
-              <input type="checkbox" id="toggle-code" checked>
-              <span>Preserve Code Blocks</span>
-            </label>
-            <label class="toggle-label" title="Minify embedded JSON strings">
-              <input type="checkbox" id="toggle-json" checked>
-              <span>Minify JSON</span>
-            </label>
-            <label class="toggle-label" title="Strip repetitive dividers and bullet whitespace">
-              <input type="checkbox" id="toggle-markdown" checked>
-              <span>Declutter Markdown</span>
-            </label>
-          </div>
+        <div class="editor-grid">
+          <article class="code-card input-card"><header><span><i class="dot"></i> RAW REQUEST</span><b id="raw-token-badge">—</b></header><textarea id="prompt-input" spellcheck="false" aria-label="Raw prompt"></textarea></article>
+          <article class="code-card output-card"><header><span><i class="dot"></i> ALLOY OUTPUT <small id="provider-output-badge">—</small></span><button id="btn-copy-optimized" type="button">Copy</button></header><pre id="optimized-output"><code>Optimizing…</code></pre></article>
         </div>
-
-        <!-- Side-by-Side Comparison Panels -->
-        <div class="playground-grid">
-          <!-- Raw Input Panel -->
-          <div class="editor-card">
-            <div class="editor-header">
-              <div class="editor-title">
-                <span class="editor-dot red"></span>
-                <span class="editor-dot yellow"></span>
-                <span class="editor-dot green"></span>
-                <span>Raw Unoptimized Prompt</span>
-              </div>
-              <div class="editor-badge" id="raw-token-badge">Calculating...</div>
-            </div>
-            <textarea id="prompt-input" class="code-textarea" spellcheck="false" placeholder="Paste your prompt with whitespace, formatting, or embedded JSON here..."></textarea>
-          </div>
-
-          <!-- Optimized Output Panel -->
-          <div class="editor-card">
-            <div class="editor-header">
-              <div class="editor-title">
-                <span class="badge-alloy">⚡ Alloy Output</span>
-                <span id="provider-output-badge" class="badge-provider">Gemini Ready</span>
-              </div>
-              <div class="editor-actions">
-                <div class="editor-badge green" id="optimized-token-badge">Calculating...</div>
-                <button class="btn btn-tiny" id="btn-copy-optimized" title="Copy output to clipboard">
-                  Copy Output
-                </button>
-              </div>
-            </div>
-            <pre class="code-preview" id="optimized-output"><code>Optimizing...</code></pre>
-          </div>
-        </div>
-
-        <!-- Live Telemetry Card -->
-        <div class="telemetry-bar" id="telemetry-bar">
-          <div class="telemetry-item">
-            <div class="telemetry-number text-highlight" id="stat-chars-saved">0</div>
-            <div class="telemetry-label">Chars Stripped</div>
-          </div>
-          <div class="telemetry-divider"></div>
-          <div class="telemetry-item">
-            <div class="telemetry-number text-accent" id="stat-tokens-saved">0</div>
-            <div class="telemetry-label">Tokens Saved</div>
-          </div>
-          <div class="telemetry-divider"></div>
-          <div class="telemetry-item">
-            <div class="telemetry-number gradient-text" id="stat-percent-saved">0%</div>
-            <div class="telemetry-label">Reduction Ratio</div>
-          </div>
-          <div class="telemetry-divider"></div>
-          <div class="telemetry-item">
-            <div class="telemetry-number text-green" id="stat-cost-saved">$0.00</div>
-            <div class="telemetry-label">Saved / 1M Calls</div>
-          </div>
-        </div>
+        <div class="telemetry"><div><span>CHARS REMOVED</span><strong id="stat-chars-saved">0</strong></div><div><span>EST. TOKENS SAVED</span><strong id="stat-tokens-saved">0</strong></div><div><span>REDUCTION</span><strong id="stat-percent-saved">0%</strong></div><div><span>EST. SAVED / 1M</span><strong id="stat-cost-saved">$0.00</strong></div></div>
+        <div class="smoke-test"><div><p class="eyebrow"><i></i> SELF CHECK</p><h3>Trust the transformation.</h3><p>Run three browser checks for YAML indentation, message order, and duplicate-request coalescing.</p></div><div><button class="button button-light" id="btn-run-live-test" type="button">Run smoke test <span>→</span></button><pre id="live-test-result" aria-live="polite">Ready.</pre></div></div>
       </div>
     </section>
-
-    <!-- Live Empirical Benchmarks -->
-    <section class="section benchmarks-section" id="benchmarks">
-      <div class="section-container">
-        <div class="section-header">
-          <span class="section-eyebrow">VERIFIED RUNTIME DATA</span>
-          <h2 class="section-title">Live Gemini 2.5 Flash Cost &amp; Token Benchmarks</h2>
-          <p class="section-description">
-            Actual figures billed and recorded directly by the official Google Gemini API (endpoint: <code>gemini-2.5-flash</code>) using our benchmark suite.
-          </p>
-        </div>
-
-        <div class="benchmark-table-wrapper">
-          <table class="benchmark-table" id="benchmark-table">
-            <thead>
-              <tr>
-                <th>Execution Pipeline</th>
-                <th>Input Tokens</th>
-                <th>Token Reduction</th>
-                <th>Output Guardrail</th>
-                <th>API Latency</th>
-                <th>Billed / 1M Calls</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr class="row-baseline">
-                <td>
-                  <div class="pipeline-name">
-                    <strong>Standard Gemini Call</strong>
-                    <span class="pipeline-desc">Unoptimized raw payload &amp; JSON</span>
-                  </div>
-                </td>
-                <td>504 tokens</td>
-                <td><span class="badge-neutral">Baseline (0%)</span></td>
-                <td>76 tokens (unconstrained)</td>
-                <td>6,798 ms</td>
-                <td><strong>$60.60</strong></td>
-              </tr>
-              <tr class="row-alloy">
-                <td>
-                  <div class="pipeline-name">
-                    <strong>Alloy Pre-Execution</strong>
-                    <span class="pipeline-desc">AST compression + JSON minified</span>
-                  </div>
-                </td>
-                <td><strong>327 tokens</strong></td>
-                <td><span class="badge-save">35.12% Saved (-177)</span></td>
-                <td>6 tokens (budgeted)</td>
-                <td>1,282 ms</td>
-                <td><strong>$26.32 (56.5% Net Save)</strong></td>
-              </tr>
-              <tr class="row-cache">
-                <td>
-                  <div class="pipeline-name">
-                    <strong>Alloy Local Memory Cache</strong>
-                    <span class="pipeline-desc">Deterministic SHA-256 LRU Hit</span>
-                  </div>
-                </td>
-                <td><strong>0 tokens</strong></td>
-                <td><span class="badge-cache">100% Saved (-504)</span></td>
-                <td>0 tokens (Instant)</td>
-                <td><strong>1 ms ⚡</strong></td>
-                <td><strong>$0.00 (100% Free)</strong></td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-
-        <!-- Visual Bar Comparison -->
-        <div class="visual-bars-container">
-          <h3 class="visual-bars-title">Input Token Load Comparison</h3>
-          
-          <div class="bar-group">
-            <div class="bar-label-group">
-              <span>Standard Gemini API Call</span>
-              <span class="bar-val">504 Tokens (100%)</span>
-            </div>
-            <div class="bar-track">
-              <div class="bar-fill bar-red" style="width: 100%;"></div>
-            </div>
-          </div>
-
-          <div class="bar-group">
-            <div class="bar-label-group">
-              <span>Alloy Context Compression</span>
-              <span class="bar-val">327 Tokens (64.88%)</span>
-            </div>
-            <div class="bar-track">
-              <div class="bar-fill bar-blue" style="width: 64.88%;"></div>
-            </div>
-          </div>
-
-          <div class="bar-group">
-            <div class="bar-label-group">
-              <span>Alloy Local LRU Cache Hit</span>
-              <span class="bar-val">0 Tokens (0%)</span>
-            </div>
-            <div class="bar-track">
-              <div class="bar-fill bar-green" style="width: 2%;"></div>
-            </div>
-          </div>
-        </div>
+    <section class="architecture" id="architecture">
+      <div class="architecture-heading"><p class="eyebrow"><i></i> THE ALLOY REQUEST PATH</p><h2>Five deliberate layers.<br><em>One clean request.</em></h2></div>
+      <div class="layer-diagram" aria-label="Five-layer alloySDK request architecture">
+        <div class="diagram-label">INCOMING REQUEST</div><div class="diagram-arrow">↓</div>
+        <article><b>01</b><div><h3>Context normalization</h3><p>Minify embedded JSON and remove redundant prompt padding while keeping indentation intact.</p></div><span>INPUT</span></article><div class="diagram-arrow">↓</div>
+        <article><b>02</b><div><h3>Request identity</h3><p>Build deterministic, JSON-safe cache keys and decline unsafe payloads.</p></div><span>SAFETY</span></article><div class="diagram-arrow">↓</div>
+        <article><b>03</b><div><h3>Local response cache</h3><p>Use TTL-aware LRU storage and coalesce matching in-flight work.</p></div><span>MEMORY</span></article><div class="diagram-arrow">↓</div>
+        <article><b>04</b><div><h3>Provider adaptation</h3><p>Produce Gemini, Anthropic, OpenAI, or vLLM-ready payloads without rewriting history.</p></div><span>ROUTING</span></article><div class="diagram-arrow">↓</div>
+        <article><b>05</b><div><h3>Token envelope</h3><p>Apply an explicit output cap, then return usage and optimization telemetry.</p></div><span>OUTPUT</span></article>
       </div>
     </section>
+    <section class="section integration" id="integration">
+      <div class="section-intro"><p class="eyebrow"><i></i> INTEGRATION</p><h2>One wrapper.<br>Any supported backend.</h2><p>Start with a familiar payload and put Alloy between your application and the model client.</p></div>
+      <div class="integration-console"><div class="console-bar"><span>alloySDK / quickstart.js</span><span>NODE</span></div><pre><code><span class="c-dim">import</span> { Alloy } <span class="c-dim">from</span> <span class="c-green">'alloy-sdk'</span>;
 
-    <!-- Interactive Enterprise ROI Calculator -->
-    <section class="section calculator-section" id="calculator">
-      <div class="section-container">
-        <div class="section-header">
-          <span class="section-eyebrow">ESTIMATE YOUR SAVINGS</span>
-          <h2 class="section-title">Enterprise ROI &amp; Spend Calculator</h2>
-          <p class="section-description">
-            Calculate your monthly and annual cost savings by adopting Alloy in front of your LLM endpoints.
-          </p>
-        </div>
-
-        <div class="calculator-grid">
-          <div class="calc-controls-card">
-            <!-- Monthly Calls Slider -->
-            <div class="calc-input-group">
-              <div class="calc-input-header">
-                <label for="slider-calls" class="calc-label">Monthly Production Requests:</label>
-                <span class="calc-val-display" id="display-calls">1,000,000</span>
-              </div>
-              <input type="range" id="slider-calls" min="100000" max="25000000" step="100000" value="1000000" class="slider-input">
-              <div class="slider-range-labels">
-                <span>100K</span>
-                <span>10M</span>
-                <span>25M</span>
-              </div>
-            </div>
-
-            <!-- Model Selection -->
-            <div class="calc-input-group">
-              <label for="select-calc-model" class="calc-label">Target Foundation Model:</label>
-              <select id="select-calc-model" class="select-input">
-                <option value="gemini-2.5-flash">Google Gemini 2.5 Flash ($0.075 / 1M)</option>
-                <option value="gpt-4o-mini">OpenAI GPT-4o-mini ($0.15 / 1M)</option>
-                <option value="gemini-1.5-pro">Google Gemini 1.5 Pro ($1.25 / 1M)</option>
-                <option value="gpt-4o">OpenAI GPT-4o ($2.50 / 1M)</option>
-                <option value="claude-3-5-sonnet">Anthropic Claude 3.5 Sonnet ($3.00 / 1M)</option>
-              </select>
-            </div>
-
-            <!-- Expected Cache Hit Rate -->
-            <div class="calc-input-group">
-              <div class="calc-input-header">
-                <label for="slider-cache" class="calc-label">Expected Cache Hit Rate (Retries / Duplicates):</label>
-                <span class="calc-val-display" id="display-cache">20%</span>
-              </div>
-              <input type="range" id="slider-cache" min="0" max="60" step="5" value="20" class="slider-input">
-            </div>
-
-            <!-- Average Prompt Size -->
-            <div class="calc-input-group">
-              <div class="calc-input-header">
-                <label for="slider-tokens" class="calc-label">Average Raw Prompt Size:</label>
-                <span class="calc-val-display" id="display-tokens">650 tokens</span>
-              </div>
-              <input type="range" id="slider-tokens" min="150" max="4000" step="50" value="650" class="slider-input">
-            </div>
-          </div>
-
-          <!-- ROI Output Display Card -->
-          <div class="calc-result-card">
-            <div class="result-header">
-              <h3>Projected Enterprise Savings</h3>
-              <span class="badge-save" id="calc-badge-reduction">~52% Total Spend Cut</span>
-            </div>
-
-            <div class="big-savings-box">
-              <div class="big-savings-amount gradient-text" id="calc-monthly-savings">$0</div>
-              <div class="big-savings-subtitle">Net Monthly Operational Savings</div>
-            </div>
-
-            <div class="annual-savings-box">
-              <div class="annual-label">Annual Projected Cost Reduction:</div>
-              <div class="annual-value text-green" id="calc-annual-savings">$0</div>
-            </div>
-
-            <div class="breakdown-list">
-              <div class="breakdown-item">
-                <span>Unoptimized Monthly Baseline:</span>
-                <span class="breakdown-val text-red" id="calc-baseline-spend">$0</span>
-              </div>
-              <div class="breakdown-item">
-                <span>Monthly Spend with Alloy:</span>
-                <span class="breakdown-val text-green" id="calc-alloy-spend">$0</span>
-              </div>
-              <div class="breakdown-item">
-                <span>Monthly Tokens Intercepted:</span>
-                <span class="breakdown-val" id="calc-tokens-intercepted">0 M Tokens</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Architecture & Mechanics Section -->
-    <section class="section architecture-section" id="architecture">
-      <div class="section-container">
-        <div class="section-header">
-          <span class="section-eyebrow">HOW IT WORKS</span>
-          <h2 class="section-title">The 5 Core Optimization Pillars</h2>
-          <p class="section-description">
-            Alloy optimizes prompt payloads in microseconds before network dispatch with zero external dependencies.
-          </p>
-        </div>
-
-        <div class="architecture-grid">
-          <div class="arch-card">
-            <div class="arch-number">01</div>
-            <h3 class="arch-title">AST &amp; Code-Safe Compressor</h3>
-            <p class="arch-body">
-              Safely collapses multiline string padding and redundant spaces in natural prose while strictly preserving Python, YAML, and code blocks inside <code>```fences```</code>.
-            </p>
-          </div>
-
-          <div class="arch-card">
-            <div class="arch-number">02</div>
-            <h3 class="arch-title">Embedded JSON Minifier</h3>
-            <p class="arch-body">
-              Balanced-bracket parser automatically finds stringified JSON snippets inside instructions and strips indentations and spaces, reducing structured contexts by up to 35%.
-            </p>
-          </div>
-
-          <div class="arch-card">
-            <div class="arch-number">03</div>
-            <h3 class="arch-title">KV-Cache Prefix Alignator</h3>
-            <p class="arch-body">
-              Stabilizes prompt prefixes so provider KV-caches (Google, OpenAI, Anthropic) achieve maximum cache hit ratios, preventing dynamic timestamps from breaking the cache chain.
-            </p>
-          </div>
-
-          <div class="arch-card">
-            <div class="arch-number">04</div>
-            <h3 class="arch-title">Deterministic LRU Cache</h3>
-            <p class="arch-body">
-              Key-order-agnostic SHA-256 in-memory cache intercepts duplicate UI queries, user retry loops, and idempotent calls within configurable TTLs, returning in <strong>0ms</strong>.
-            </p>
-          </div>
-
-          <div class="arch-card">
-            <div class="arch-number">05</div>
-            <h3 class="arch-title">Output Token Budget Guardrail</h3>
-            <p class="arch-body">
-              Enforces dynamic max_tokens completion caps to prevent expensive 3x–5x priced output token waste caused by unneeded conversational filler.
-            </p>
-          </div>
-
-          <div class="arch-card highlight-card">
-            <div class="arch-number">06</div>
-            <h3 class="arch-title">Universal Runtime Support</h3>
-            <p class="arch-body">
-              Written in modern ECMAScript with native Node.js crypto and WebCrypto fallbacks. Runs universally in Node.js, Bun, Deno, Next.js Edge, and browser clients.
-            </p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Quickstart & Code Docs -->
-    <section class="section quickstart-section" id="quickstart">
-      <div class="section-container">
-        <div class="section-header">
-          <span class="section-eyebrow">INTEGRATION GUIDE</span>
-          <h2 class="section-title">Drop-In Integration in Under 2 Minutes</h2>
-          <p class="section-description">
-            Alloy integrates seamlessly with your existing provider SDKs without altering your application logic.
-          </p>
-        </div>
-
-        <div class="code-container-card">
-          <div class="code-tabs-header">
-            <button class="code-tab active" data-tab="gemini">Google Gemini SDK</button>
-            <button class="code-tab" data-tab="openai">OpenAI SDK</button>
-            <button class="code-tab" data-tab="anthropic">Anthropic Claude</button>
-            <button class="code-tab" data-tab="pure">Standalone Optimizer</button>
-          </div>
-
-          <div class="code-tab-content active" id="tab-gemini">
-            <pre class="code-block"><code><span class="token-keyword">import</span> { GoogleGenAI } <span class="token-keyword">from</span> <span class="token-string">'@google/genai'</span>;
-<span class="token-keyword">import</span> { Alloy } <span class="token-keyword">from</span> <span class="token-string">'alloy-sdk'</span>;
-
-<span class="token-keyword">const</span> ai = <span class="token-keyword">new</span> GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
-<span class="token-keyword">const</span> alloy = <span class="token-keyword">new</span> Alloy({
-  defaultProvider: <span class="token-string">'gemini'</span>,
-  defaultModel: <span class="token-string">'gemini-2.5-flash'</span>,
-  cacheTTLMs: <span class="token-number">300000</span> <span class="token-comment">// 5-minute memory cache</span>
+<span class="c-dim">const</span> alloy = <span class="c-dim">new</span> Alloy({
+  defaultProvider: <span class="c-green">'vllm'</span>,
+  cacheTTLMs: <span class="c-blue">300000</span>
 });
 
-<span class="token-comment">// Automatic role mapping ('assistant' ➔ 'model') &amp; systemInstruction separation</span>
-<span class="token-keyword">const</span> response = <span class="token-keyword">await</span> alloy.execute(
-  <span class="token-keyword">async</span> (payload) => {
-    <span class="token-keyword">return</span> <span class="token-keyword">await</span> ai.models.generateContent({
-      model: <span class="token-string">'gemini-2.5-flash'</span>,
-      contents: payload.contents,
-      config: {
-        systemInstruction: payload.systemInstruction,
-        maxOutputTokens: payload.maxOutputTokens
-      }
-    });
-  },
-  {
-    messages: [
-      { role: <span class="token-string">'system'</span>, content: <span class="token-string">'You are an enterprise underwriting assistant.'</span> },
-      { role: <span class="token-string">'user'</span>, content: <span class="token-string">'Audit payload: { "riskScore": 12, "active": true }'</span> }
-    ]
-  }
-);
-
-console.log(response.text);
-console.log(response._alloyMeta); <span class="token-comment">// { cacheHit: false, savedTokens: 48, costSavedUSD: 0.000004 }</span></code></pre>
-          </div>
-
-          <div class="code-tab-content" id="tab-openai">
-            <pre class="code-block"><code><span class="token-keyword">import</span> OpenAI <span class="token-keyword">from</span> <span class="token-string">'openai'</span>;
-<span class="token-keyword">import</span> { Alloy } <span class="token-keyword">from</span> <span class="token-string">'alloy-sdk'</span>;
-
-<span class="token-keyword">const</span> openai = <span class="token-keyword">new</span> OpenAI();
-<span class="token-keyword">const</span> alloy = <span class="token-keyword">new</span> Alloy({ defaultProvider: <span class="token-string">'openai'</span>, defaultModel: <span class="token-string">'gpt-4o'</span> });
-
-<span class="token-comment">// Strict prefix stabilization: [System ➔ Static ➔ Conversation turns]</span>
-<span class="token-keyword">const</span> response = <span class="token-keyword">await</span> alloy.execute(
-  <span class="token-keyword">async</span> (payload) => {
-    <span class="token-keyword">return</span> <span class="token-keyword">await</span> openai.chat.completions.create({
-      model: <span class="token-string">'gpt-4o'</span>,
-      messages: payload.messages,
-      max_tokens: payload.max_tokens
-    });
-  },
-  {
-    messages: [
-      { role: <span class="token-string">'system'</span>, content: <span class="token-string">'You are a code refactoring expert.'</span> },
-      { role: <span class="token-string">'user'</span>, isStatic: <span class="token-keyword">true</span>, content: <span class="token-string">'API Guidelines: ...'</span> },
-      { role: <span class="token-string">'user'</span>, content: <span class="token-string">'How do I handle connection retries?'</span> }
-    ]
-  }
-);</code></pre>
-          </div>
-
-          <div class="code-tab-content" id="tab-anthropic">
-            <pre class="code-block"><code><span class="token-keyword">import</span> Anthropic <span class="token-keyword">from</span> <span class="token-string">'@anthropic-ai/sdk'</span>;
-<span class="token-keyword">import</span> { Alloy } <span class="token-keyword">from</span> <span class="token-string">'alloy-sdk'</span>;
-
-<span class="token-keyword">const</span> anthropic = <span class="token-keyword">new</span> Anthropic();
-<span class="token-keyword">const</span> alloy = <span class="token-keyword">new</span> Alloy({ defaultProvider: <span class="token-string">'anthropic'</span> });
-
-<span class="token-comment">// Injects cache_control: { type: 'ephemeral' } on static anchors</span>
-<span class="token-keyword">const</span> response = <span class="token-keyword">await</span> alloy.execute(
-  <span class="token-keyword">async</span> (payload) => {
-    <span class="token-keyword">return</span> <span class="token-keyword">await</span> anthropic.messages.create({
-      model: <span class="token-string">'claude-3-5-sonnet-20241022'</span>,
-      system: payload.systemInstruction,
-      messages: payload.messages,
-      max_tokens: <span class="token-number">300</span>
-    });
-  },
-  {
-    messages: [
-      { role: <span class="token-string">'system'</span>, content: <span class="token-string">'You are a legal document summarizer.'</span> },
-      { role: <span class="token-string">'user'</span>, isStatic: <span class="token-keyword">true</span>, content: <span class="token-string">'Contract reference clauses...'</span> },
-      { role: <span class="token-string">'user'</span>, content: <span class="token-string">'Summarize section 4.2.'</span> }
-    ]
-  }
-);</code></pre>
-          </div>
-
-          <div class="code-tab-content" id="tab-pure">
-            <pre class="code-block"><code><span class="token-keyword">import</span> { Alloy } <span class="token-keyword">from</span> <span class="token-string">'alloy-sdk'</span>;
-
-<span class="token-keyword">const</span> alloy = <span class="token-keyword">new</span> Alloy({ defaultProvider: <span class="token-string">'gemini'</span> });
-
-<span class="token-comment">// Pure optimization mode without executing network requests</span>
-<span class="token-keyword">const</span> { messages, systemInstruction, telemetry } = alloy.optimize([
-  { role: <span class="token-string">'system'</span>, content: <span class="token-string">'You are a support bot.'</span> },
-  { role: <span class="token-string">'user'</span>, content: <span class="token-string">'User details:\n  {\n    "id": 9921,\n    "tier": "enterprise"\n  }'</span> }
-]);
-
-console.log(<span class="token-string">'Optimized Payload:'</span>, messages);
-console.log(<span class="token-string">'Reduction:'</span>, telemetry.reductionPercent + <span class="token-string">'%'</span>);
-console.log(<span class="token-string">'Tokens Saved:'</span>, telemetry.savedTokens);</code></pre>
-          </div>
-        </div>
-      </div>
+<span class="c-dim">const</span> response = <span class="c-dim">await</span> alloy.execute(
+  payload =&gt; client.chat.completions.create(payload),
+  { messages },
+  { provider: <span class="c-green">'vllm'</span> }
+);</code></pre><div class="console-footer"><span>✓ ORDER PRESERVED</span><span>✓ CACHE SAFE</span><a href="https://github.com/Saminu/alloysdk" target="_blank" rel="noopener noreferrer">Read README ↗</a></div></div>
     </section>
   </main>
-
-  <!-- Footer -->
-  <footer class="site-footer">
-    <div class="footer-container">
-      <div class="footer-col">
-        <div class="logo-group">
-          <div class="logo-badge">⚡</div>
-          <span class="logo-title">Alloy<span class="logo-ext">.js</span></span>
-        </div>
-        <p class="footer-about">
-          The open-source token optimization and cost-guardrail layer for enterprise LLM workloads.
-        </p>
-      </div>
-
-      <div class="footer-col">
-        <h4 class="footer-heading">Resources</h4>
-        <ul class="footer-links">
-          <li><a href="#playground">Live Playground</a></li>
-          <li><a href="#benchmarks">Empirical Benchmarks</a></li>
-          <li><a href="#calculator">ROI Cost Calculator</a></li>
-          <li><a href="#quickstart">Quickstart Guide</a></li>
-        </ul>
-      </div>
-
-      <div class="footer-col">
-        <h4 class="footer-heading">Open Source</h4>
-        <ul class="footer-links">
-          <li><a href="https://github.com/Saminu/alloysdk" target="_blank" rel="noopener noreferrer">GitHub Repository</a></li>
-          <li><a href="https://github.com/Saminu/alloysdk/issues" target="_blank" rel="noopener noreferrer">Report an Issue</a></li>
-          <li><a href="https://github.com/Saminu/alloysdk/blob/main/LICENSE" target="_blank" rel="noopener noreferrer">MIT License</a></li>
-        </ul>
-      </div>
-    </div>
-
-    <div class="footer-bottom">
-      <p>© 2026 Alloy SDK. Released under the MIT License.</p>
-    </div>
-  </footer>
-
+  <footer><a class="brand" href="#top"><svg class="brand-mark" viewBox="0 0 32 32" aria-hidden="true"><path d="M7 24 16 5l9 19h-5.2L16 15.5 12.2 24Z"/><path d="M13.8 19h4.4"/></svg><span>alloy<span>SDK</span></span></a><p>Intentional token infrastructure for LLM applications.</p><span>© 2026 alloySDK</span></footer>
   <script type="module" src="app.js"></script>
 </body>
 </html>
