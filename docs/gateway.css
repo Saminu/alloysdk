@@ -1,0 +1,32 @@
+/* AlloyAPI panel refinements: scoped so component styles cannot inherit site chrome. */
+.gateway-terminal pre {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.gateway-terminal footer {
+  min-height: 0;
+  padding: 14px 18px;
+  background: #172727;
+}
+
+.enterprise-link {
+  display: inline-flex;
+  gap: 16px;
+  align-items: center;
+  margin-top: 28px;
+  color: #d9f1e9;
+  font: 11px var(--mono);
+  letter-spacing: .08em;
+  text-decoration: none;
+  text-transform: uppercase;
+}
+
+.enterprise-link span { color: #75e0bb; font-size: 18px; }
+.enterprise-link:hover { color: #75e0bb; }
+
+@media (max-width: 600px) {
+  .gateway-terminal footer {
+    padding: 14px 18px;
+  }
+}

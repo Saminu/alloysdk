@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Alloy Enterprise — AI cost control and clear data boundaries</title>
+  <meta name="description" content="Alloy Enterprise centralizes token efficiency, model routing, cost visibility, and workload controls behind one OpenAI-compatible gateway.">
+  <meta name="theme-color" content="#081817">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;600;700&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="enterprise.css?v=20260910-1">
+</head>
+<body>
+  <header class="enterprise-header">
+    <a class="brand" href="index.html" aria-label="alloySDK home"><svg viewBox="0 0 32 32" aria-hidden="true"><path d="M7 24 16 5l9 19h-5.2L16 15.5 12.2 24Z"/><path d="M13.8 19h4.4"/></svg><span>alloy<span>SDK</span></span></a>
+    <nav aria-label="Primary navigation"><a href="index.html#playground">Playground</a><a href="index.html#alloyapi">AlloyAPI</a><a class="active" href="enterprise.html">Enterprise</a><a href="index.html#integration">Integration</a></nav>
+    <a class="header-link" href="index.html#alloyapi">View API setup <span>→</span></a>
+  </header>
+
+  <main>
+    <section class="enterprise-hero">
+      <div class="hero-copy">
+        <p class="kicker"><i></i> ALLOY ENTERPRISE</p>
+        <h1>Control AI spend.<br><em>Keep data boundaries clear.</em></h1>
+        <p class="lead">Alloy Enterprise gives teams one place to apply token efficiency, routing policy, cache controls, and usage visibility—without forcing applications to change how they call models.</p>
+        <div class="hero-actions"><a class="button primary" href="index.html#alloyapi">See the API setup <span>→</span></a><a class="button secondary" href="#controls">Explore controls</a></div>
+        <div class="hero-notes"><span>One compatible endpoint</span><span>Central usage visibility</span><span>Policy-ready routing</span></div>
+      </div>
+      <aside class="spend-card" aria-label="Illustrative token savings dashboard">
+        <div class="card-bar"><span>ORGANIZATION COST VIEW</span><b>POLICY ACTIVE</b></div>
+        <div class="spend-content">
+          <p>INPUT OVERHEAD REMOVED</p><strong>28.6%</strong><span>Illustrative workload reduction</span>
+          <div class="spend-bars"><div><span>UNOPTIMIZED INPUT</span><i><b></b></i></div><div><span>WITH ALLOY POLICY</span><i class="optimized"><b></b></i></div></div>
+        </div>
+        <div class="card-footer"><span>✓ REQUEST INTENT PRESERVED</span><span>✓ USAGE MEASURED</span></div>
+      </aside>
+    </section>
+
+    <section class="signal-strip" aria-label="Enterprise benefits"><span>ONE GATEWAY</span><span>MODEL POLICY</span><span>COST VISIBILITY</span><span>DATA-BOUNDARY CLARITY</span></section>
+
+    <section class="boundaries" id="controls">
+      <div class="section-heading"><p class="kicker"><i></i> OPERATE WITH CLARITY</p><h2>Your data boundaries,<br><em>clearly explained.</em></h2></div>
+      <p class="section-lead">Make the controls around every model request visible: what is measured, where a request is routed, and when caching is permitted. Configure them to match your application and provider policies.</p>
+      <div class="control-grid">
+        <article class="control-card ledger"><div class="request-log"><span>POST /v1/chat/completions</span><span>MODEL&nbsp;&nbsp;<b>gpt-4o-mini</b></span><span>USAGE&nbsp;&nbsp;<b>1,284 tokens</b></span><span>CONTENT&nbsp;&nbsp;<strong>policy-defined</strong></span></div><h3>Usage visibility</h3><p>Track the operational data that helps teams understand model usage and token spend.</p></article>
+        <article class="control-card retention"><div class="retention-flow"><div>APP</div><i>RETENTION<br><small>POLICY*</small></i><div>PROVIDER</div></div><h3>Retention-aware routing</h3><p>Choose routes that suit your retention requirements and confirm upstream policies for each deployment.</p></article>
+        <article class="control-card providers"><div class="provider-flow"><b>YOUR APP</b><i></i><b>ALLOY</b><i></i><span>OpenAI</span><span>Anthropic</span><span>vLLM</span></div><h3>Provider policy</h3><p>Apply routing choices by model capability, workload requirements, or approved provider list.</p></article>
+        <article class="control-card cache"><div class="cache-switch"><span>▣</span><div><small>CACHE CONTROL</small><b>Safe response reuse</b></div><i>✓</i></div><h3>Deliberate caching</h3><p>Reuse only deterministic, safe work and configure cache behavior for the workload at hand.</p></article>
+      </div>
+      <p class="fine-print">* Retention and caching behavior depend on your configuration and the selected upstream provider.</p>
+    </section>
+
+    <section class="implementation">
+      <div><p class="kicker"><i></i> ONE INTEGRATION</p><h2>Keep the client.<br><em>Centralize the policy.</em></h2><p>Teams keep their OpenAI-compatible client. Alloy Enterprise becomes the gateway where efficiency and routing rules are applied.</p></div>
+      <div class="code-card"><header><span>enterprise-client.py</span><span>OPENAI SDK</span></header><pre><code><span class="dim">from</span> openai <span class="dim">import</span> OpenAI
+<span class="dim">import</span> os
+
+client = OpenAI(
+  base_url=<span class="green">"https://alloyapi.ai.studio/v1"</span>,
+  api_key=os.environ[<span class="green">"ALLOY_API_KEY"</span>],
+)
+
+response = client.chat.completions.create(
+  model=<span class="green">"gpt-4o-mini"</span>,
+  messages=messages,
+)</code></pre><footer><span>ONE KEY</span><span>POLICY APPLIED AT THE GATEWAY</span></footer></div>
+    </section>
+
+    <section class="enterprise-cta"><p class="kicker"><i></i> ALLOY ENTERPRISE</p><h2>Make every model request<br><em>accountable.</em></h2><p>Start with the compatible AlloyAPI endpoint, then establish the controls your organization needs.</p><a class="button primary" href="index.html#alloyapi">View AlloyAPI setup <span>→</span></a></section>
+  </main>
+
+  <footer class="enterprise-footer"><a class="brand" href="index.html"><svg viewBox="0 0 32 32" aria-hidden="true"><path d="M7 24 16 5l9 19h-5.2L16 15.5 12.2 24Z"/><path d="M13.8 19h4.4"/></svg><span>alloy<span>SDK</span></span></a><p>Enterprise LLM efficiency infrastructure.</p><a href="index.html">Back to alloySDK →</a></footer>
+</body>
+</html>

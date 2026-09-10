@@ -64,6 +64,11 @@ const copy = document.getElementById('btn-copy-optimized');
 const testButton = document.getElementById('btn-run-live-test');
 const testResult = document.getElementById('live-test-result');
 const savings = document.getElementById('hero-savings');
+const savingsPanel = document.getElementById('hero-savings-panel');
+const heroRawTokens = document.getElementById('hero-raw-tokens');
+const heroOptimizedTokens = document.getElementById('hero-optimized-tokens');
+const heroTokensSaved = document.getElementById('hero-tokens-saved');
+const apiCopy = document.getElementById('btn-copy-api');
 
 function options() {
   return {
@@ -91,7 +96,13 @@ function render() {
   document.getElementById('stat-tokens-saved').textContent = tokensSaved.toLocaleString();
   document.getElementById('stat-percent-saved').textContent = `${ratio.toFixed(1)}%`;
   document.getElementById('stat-cost-saved').textContent = `$${(tokensSaved * 0.075).toFixed(2)}`;
-  savings.textContent = `${ratio.toFixed(1)}%`;
+  const boundedRatio = Math.min(100, Math.max(0, ratio));
+  savings.textContent = `${boundedRatio.toFixed(1)}%`;
+  savingsPanel.style.setProperty('--savings', `${boundedRatio}%`);
+  savingsPanel.style.setProperty('--optimized-width', `${Math.max(8, 100 - boundedRatio)}%`);
+  heroRawTokens.textContent = `${rawTokens} TOK`;
+  heroOptimizedTokens.textContent = `${optimizedTokens} TOK`;
+  heroTokensSaved.textContent = tokensSaved.toLocaleString();
 }
 
 preset.addEventListener('change', () => { input.value = PRESETS[preset.value]; render(); });
@@ -101,6 +112,12 @@ copy.addEventListener('click', async () => {
   await navigator.clipboard.writeText(output.textContent);
   copy.textContent = 'Copied';
   setTimeout(() => { copy.textContent = 'Copy'; }, 1200);
+});
+
+apiCopy.addEventListener('click', async () => {
+  await navigator.clipboard.writeText(document.querySelector('#api-code').innerText);
+  apiCopy.textContent = 'Copied';
+  setTimeout(() => { apiCopy.textContent = 'Copy'; }, 1200);
 });
 
 testButton.addEventListener('click', async () => {

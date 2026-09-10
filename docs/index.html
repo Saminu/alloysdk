@@ -3,40 +3,48 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>alloySDK — Intentional token infrastructure</title>
-  <meta name="description" content="alloySDK is a lightweight Node.js middleware layer for prompt optimization, safe response caching, and provider-ready LLM payloads.">
+  <title>alloySDK — Cut LLM token waste without changing intent</title>
+  <meta name="description" content="alloySDK and AlloyAPI reduce avoidable LLM token spend, safely reuse repeat work, and route provider-ready payloads without changing application intent.">
   <meta name="theme-color" content="#06172a">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;600;700&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css?v=20260910-2">
+  <link rel="stylesheet" href="gateway.css?v=20260910-1">
+  <link rel="stylesheet" href="hero-savings.css?v=20260910-1">
 </head>
 <body>
-  <div class="notice-bar"><span>[ NEW ]</span> alloySDK supports vLLM-compatible payloads and safe request coalescing.</div>
+  <div class="notice-bar"><span>[ ALLOY LAYER ]</span> Reduce token waste before every LLM request reaches a provider.</div>
   <header class="site-header">
     <a class="brand" href="#top" aria-label="alloySDK home"><svg class="brand-mark" viewBox="0 0 32 32" aria-hidden="true"><path d="M7 24 16 5l9 19h-5.2L16 15.5 12.2 24Z"/><path d="M13.8 19h4.4"/></svg><span>alloy<span>SDK</span></span></a>
-    <nav class="nav" aria-label="Primary navigation"><a href="#playground">Playground</a><a href="#architecture">Architecture</a><a href="#integration">Integration</a></nav>
+    <nav class="nav" aria-label="Primary navigation"><a href="#playground">Playground</a><a href="#architecture">Architecture</a><a href="#alloyapi">AlloyAPI</a><a href="enterprise.html">Enterprise</a><a href="#integration">Integration</a></nav>
     <a class="nav-cta" href="https://github.com/Saminu/alloysdk" target="_blank" rel="noopener noreferrer">View on GitHub <span>↗</span></a>
   </header>
   <main id="top">
     <section class="hero">
       <div class="hero-copy">
-        <p class="eyebrow"><i></i> TOKEN INFRASTRUCTURE</p>
-        <h1>Optimize context.<br><em>Preserve intent.</em></h1>
-        <p class="hero-description">alloySDK is a focused middleware layer that turns noisy LLM requests into lean, provider-ready payloads—without altering the meaning or chronology of a conversation.</p>
-        <div class="hero-actions"><a href="#playground" class="button button-primary">Explore the playground <span>→</span></a><a href="#integration" class="button button-quiet">Read the docs</a></div>
-        <div class="hero-tags"><span>Node.js</span><span>OpenAI-compatible</span><span>vLLM-ready</span></div>
+        <p class="eyebrow"><i></i> LLM EFFICIENCY LAYER</p>
+        <h1>Reduce token spend.<br><em>Keep intent.</em></h1>
+        <p class="hero-description">alloySDK removes avoidable token overhead and safely reuses repeat work. AlloyAPI puts that same optimization and routing behind one OpenAI-compatible endpoint.</p>
+        <div class="hero-actions"><a href="#playground" class="button button-primary">Explore the playground <span>→</span></a><a href="#integration" class="button button-quiet">See integration</a></div>
+        <div class="hero-tags"><span>Less input waste</span><span>OpenAI-compatible</span><span>vLLM-ready</span></div>
       </div>
-      <div class="hero-visual" aria-label="alloySDK optimization flow">
-        <div class="visual-topline"><span>REQUEST SIGNAL</span><span>LIVE</span></div>
-        <div class="signal-lines"><span></span><span></span><span></span><span></span><span></span></div>
-        <div class="signal-flow"><div><b>01</b><span>normalize context</span><small>JSON · whitespace</small></div><div><b>02</b><span>validate identity</span><small>stable cache key</small></div><div><b>03</b><span>dispatch cleanly</span><small>provider payload</small></div></div>
-        <div class="visual-footer"><span>EST. OVERHEAD REMOVED</span><strong id="hero-savings">—</strong></div>
+      <div class="hero-visual savings-panel" id="hero-savings-panel" aria-label="Live token-savings preview">
+        <div class="savings-panel-header"><span>LIVE SAVINGS PREVIEW</span><span>REQUEST ANALYZED</span></div>
+        <div class="savings-panel-body">
+          <div class="savings-ring" aria-hidden="true"><div><strong id="hero-savings">—</strong><span>LESS INPUT</span></div></div>
+          <div class="savings-comparison">
+            <div class="savings-row"><div><span>ORIGINAL CONTEXT</span><b id="hero-raw-tokens">— TOK</b></div><i class="savings-bar savings-bar-raw"></i></div>
+            <div class="savings-row"><div><span>ALLOY CONTEXT</span><b id="hero-optimized-tokens">— TOK</b></div><i class="savings-bar savings-bar-optimized"></i></div>
+            <p><strong id="hero-tokens-saved">—</strong> tokens removed before routing</p>
+          </div>
+        </div>
+        <div class="savings-panel-footer"><span>✓ CONTEXT PRESERVED</span><span>✓ PROVIDER-READY</span></div>
       </div>
     </section>
-    <section class="proof-strip" aria-label="alloySDK properties"><p><i></i> DESIGNED FOR REPEATABLE, INSPECTABLE LLM REQUESTS</p><div><span>JSON MINIFICATION</span><span>LRU + TTL</span><span>ORDER-PRESERVING</span><span>REQUEST COALESCING</span></div></section>
+    <section class="proof-strip" aria-label="alloySDK properties"><p><i></i> ONE EFFICIENCY LAYER FOR EVERY LLM REQUEST</p><div><span>LEANER PAYLOADS</span><span>SAFE CACHE REUSE</span><span>PROVIDER PORTABILITY</span><span>REQUEST COALESCING</span></div></section>
     <section class="section playground" id="playground">
-      <div class="section-intro"><p class="eyebrow"><i></i> IN BROWSER</p><h2>See the request<br>before it leaves.</h2><p>Paste a prompt, choose a target, and inspect the transformed payload. Everything on this page runs locally—no API key or prompt is sent anywhere.</p></div>
+      <div class="section-intro"><p class="eyebrow"><i></i> IN BROWSER</p><h2>See savings.<br><em>Before launch.</em></h2><p>See exactly what Alloy removes, then inspect the provider-ready payload. Everything runs locally—no API key or prompt is sent anywhere.</p></div>
       <div class="playground-workbench">
         <div class="control-row">
           <label>EXAMPLE<select id="preset-select"><option value="underwriting">Underwriting payload</option><option value="devops">DevOps context</option><option value="medical">Clinical record</option><option value="rag">RAG context</option></select></label>
@@ -52,7 +60,7 @@
       </div>
     </section>
     <section class="architecture" id="architecture">
-      <div class="architecture-heading"><p class="eyebrow"><i></i> THE ALLOY REQUEST PATH</p><h2>Five deliberate layers.<br><em>One clean request.</em></h2></div>
+      <div class="architecture-heading"><p class="eyebrow"><i></i> THE ALLOY REQUEST PATH</p><h2>How Alloy earns<br><em>the savings.</em></h2></div>
       <div class="layer-diagram" aria-label="Five-layer alloySDK request architecture">
         <div class="diagram-label">INCOMING REQUEST</div><div class="diagram-arrow">↓</div>
         <article><b>01</b><div><h3>Context normalization</h3><p>Minify embedded JSON and remove redundant prompt padding while keeping indentation intact.</p></div><span>INPUT</span></article><div class="diagram-arrow">↓</div>
@@ -62,8 +70,30 @@
         <article><b>05</b><div><h3>Token envelope</h3><p>Apply an explicit output cap, then return usage and optimization telemetry.</p></div><span>OUTPUT</span></article>
       </div>
     </section>
+    <section class="api-gateway" id="alloyapi">
+      <div class="gateway-signals"><span>{ }</span><span>OPENAI SDK COMPATIBLE</span><span>▣</span><span>ENTERPRISE CONTROLS</span><span>↘</span><span>COST VISIBILITY</span></div>
+      <div class="gateway-body">
+        <div class="gateway-copy"><p class="eyebrow"><i></i> ALLOYAPI · ENTERPRISE GATEWAY</p><h2>Control AI cost.<br><em>Across every team.</em></h2><p>Centralize Alloy’s token optimization, model routing, and usage visibility behind one OpenAI-compatible endpoint. Change only your base URL and API key; teams keep their clients and workflows.</p><div class="endpoint"><span>BASE URL</span><code>https://alloyapi.ai.studio/v1</code></div><div class="gateway-notes"><span>✓ One Alloy API key</span><span>✓ Per-request model routing</span><span>✓ Usage telemetry</span></div><a class="enterprise-link" href="enterprise.html">Explore Alloy Enterprise <span>→</span></a></div>
+        <div class="gateway-terminal"><header><span>alloyapi.py</span><button id="btn-copy-api" type="button">Copy</button></header><pre id="api-code"><code><span class="c-dim">from</span> openai <span class="c-dim">import</span> OpenAI
+<span class="c-dim">import</span> os
+
+client = OpenAI(
+  base_url=<span class="c-green">"https://alloyapi.ai.studio/v1"</span>,
+  api_key=os.environ[<span class="c-green">"ALLOY_API_KEY"</span>],
+)
+
+response = client.chat.completions.create(
+  model=<span class="c-green">"gpt-4o-mini"</span>,
+  messages=[{<span class="c-green">"role"</span>: <span class="c-green">"user"</span>, <span class="c-green">"content"</span>: <span class="c-green">"Hello via AlloyAPI proxy!"</span>}],
+  max_tokens=<span class="c-blue">150</span>,
+)
+
+print(response.choices[<span class="c-blue">0</span>].message.content)</code></pre><footer><span>OPENAI-COMPATIBLE</span><span>YOUR KEY STAYS IN YOUR ENVIRONMENT</span></footer></div>
+      </div>
+      <div class="gateway-providers"><span>ONE GATEWAY · EVERY PROVIDER</span><b>OpenAI</b><b>Anthropic</b><b>Google</b><b>vLLM</b><b>Any OpenAI-compatible endpoint</b></div>
+    </section>
     <section class="section integration" id="integration">
-      <div class="section-intro"><p class="eyebrow"><i></i> INTEGRATION</p><h2>One wrapper.<br>Any supported backend.</h2><p>Start with a familiar payload and put Alloy between your application and the model client.</p></div>
+      <div class="section-intro"><p class="eyebrow"><i></i> INTEGRATION</p><h2>In your app.<br><em>At your edge.</em></h2><p>Use alloySDK where you own the code, or AlloyAPI for centralized control. Either way, requests become leaner before they reach a provider.</p></div>
       <div class="integration-console"><div class="console-bar"><span>alloySDK / quickstart.js</span><span>NODE</span></div><pre><code><span class="c-dim">import</span> { Alloy } <span class="c-dim">from</span> <span class="c-green">'alloy-sdk'</span>;
 
 <span class="c-dim">const</span> alloy = <span class="c-dim">new</span> Alloy({
@@ -78,7 +108,7 @@
 );</code></pre><div class="console-footer"><span>✓ ORDER PRESERVED</span><span>✓ CACHE SAFE</span><a href="https://github.com/Saminu/alloysdk" target="_blank" rel="noopener noreferrer">Read README ↗</a></div></div>
     </section>
   </main>
-  <footer><a class="brand" href="#top"><svg class="brand-mark" viewBox="0 0 32 32" aria-hidden="true"><path d="M7 24 16 5l9 19h-5.2L16 15.5 12.2 24Z"/><path d="M13.8 19h4.4"/></svg><span>alloy<span>SDK</span></span></a><p>Intentional token infrastructure for LLM applications.</p><span>© 2026 alloySDK</span></footer>
-  <script type="module" src="app.js"></script>
+  <footer class="site-footer"><a class="brand" href="#top"><svg class="brand-mark" viewBox="0 0 32 32" aria-hidden="true"><path d="M7 24 16 5l9 19h-5.2L16 15.5 12.2 24Z"/><path d="M13.8 19h4.4"/></svg><span>alloy<span>SDK</span></span></a><p>The LLM efficiency layer.</p><span>© 2026 alloySDK</span></footer>
+  <script type="module" src="app.js?v=20260910-2"></script>
 </body>
 </html>
