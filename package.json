@@ -1,7 +1,7 @@
 {
   "name": "alloy-sdk",
   "version": "1.0.0",
-  "description": "alloySDK — intentional token infrastructure for LLM applications",
+  "description": "Enterprise-grade LLM Token Optimization & Prompt Caching Middleware",
   "main": "./alloy.js",
   "module": "./alloy.js",
   "types": "./alloy.d.ts",

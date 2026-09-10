@@ -196,10 +196,12 @@ export function compressText(text, options = {}) {
   // 6. Enforce at most 2 consecutive newlines (one empty line)
   processed = processed.replace(/\n{3,}/g, '\n\n').trim();
 
-  // 7. Restore preserved code blocks
+  // 7. Restore preserved code blocks.
+  // Use a function replacer so `$`, `$&`, `$1`, and `$$` in source code are copied literally.
   if (preserveCodeBlocks && codeBlocks.length > 0) {
     for (let i = 0; i < codeBlocks.length; i++) {
-      processed = processed.replace(`\u0000ALLOY_CODE_BLOCK_${i}\u0000`, codeBlocks[i]);
+      const block = codeBlocks[i];
+      processed = processed.replace(`\u0000ALLOY_CODE_BLOCK_${i}\u0000`, () => block);
     }
   }
 

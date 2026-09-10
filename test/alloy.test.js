@@ -37,6 +37,27 @@ test('minifyJsonContext minifies JSON inside prose while handling strings with b
   assert.ok(minified.includes('Please review.'));
 });
 
+test('compressText restores code blocks without interpreting $ replacement patterns', () => {
+  const input = [
+    'Snippet:',
+    '```bash',
+    'echo $1',
+    'price=$&',
+    'cost=$$HOME',
+    "tail=$'",
+    '```',
+    'Done.'
+  ].join('\n');
+
+  const compressed = compressText(input, { preserveCodeBlocks: true });
+
+  assert.ok(compressed.includes('echo $1'));
+  assert.ok(compressed.includes('price=$&'));
+  assert.ok(compressed.includes('cost=$$HOME'));
+  assert.ok(compressed.includes("tail=$'"));
+  assert.ok(!compressed.includes('\u0000ALLOY_CODE_BLOCK_'));
+});
+
 test('compressText preserves code block indentation while collapsing prose whitespace', () => {
   const input = `
     Here is the instruction:

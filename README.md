@@ -1,7 +1,7 @@
-# alloySDK
-> **Intentional token infrastructure for LLM applications**
+# Alloy.js ⚡
+> **Enterprise-Grade Token Optimization, Context Compression & Prompt Caching Middleware for LLMs**
 
-alloySDK is a lightweight Node.js middleware library that sits between your enterprise application and LLM inference endpoints (**Google Gemini**, **OpenAI**, **Anthropic**, and self-hosted **vLLM** models).
+Alloy is a lightweight Node.js middleware library that sits between your enterprise application and LLM inference endpoints (**Google Gemini**, **OpenAI**, **Anthropic**, and self-hosted **vLLM** models).
 
 By combining conservative text compression, embedded JSON minification, local response caching, and output budgeting, Alloy reduces avoidable prompt overhead while preserving message order. Measure savings against your provider’s usage data before making cost commitments.
 

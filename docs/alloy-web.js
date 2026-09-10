@@ -122,7 +122,8 @@ export function compressText(text, options = {}) {
 
   if (preserveCodeBlocks && codeBlocks.length > 0) {
     for (let i = 0; i < codeBlocks.length; i++) {
-      processed = processed.replace(`\u0000ALLOY_CODE_BLOCK_${i}\u0000`, codeBlocks[i]);
+      const block = codeBlocks[i];
+      processed = processed.replace(`\u0000ALLOY_CODE_BLOCK_${i}\u0000`, () => block);
     }
   }
 
