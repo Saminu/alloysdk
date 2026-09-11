@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Get started with Alloy Enterprise</title>
+  <meta name="description" content="Connect an existing OpenAI-compatible client to Alloy Enterprise in three steps.">
+  <meta name="theme-color" content="#081817">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;600;700&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="enterprise.css?v=20260910-1">
+  <link rel="stylesheet" href="enterprise-getting-started.css?v=20260911-1">
+</head>
+<body>
+  <header class="enterprise-header">
+    <a class="brand" href="index.html" aria-label="alloySDK home"><svg viewBox="0 0 32 32" aria-hidden="true"><path d="M7 24 16 5l9 19h-5.2L16 15.5 12.2 24Z"/><path d="M13.8 19h4.4"/></svg><span>alloy<span>SDK</span></span></a>
+    <nav aria-label="Primary navigation"><a href="index.html#playground">Playground</a><a href="index.html#alloyapi">AlloyAPI</a><a href="enterprise.html">Enterprise</a><a class="active" href="enterprise-getting-started.html">Get started</a><a href="index.html#integration">Integration</a></nav>
+    <a class="header-link" href="enterprise.html">Enterprise overview <span>→</span></a>
+  </header>
+
+  <main class="guide-layout">
+    <aside class="guide-sidebar" aria-label="On this page">
+      <p>ALLOY ENTERPRISE</p>
+      <a class="current" href="#top">Getting started</a>
+      <a href="#key">1. Store your key</a>
+      <a href="#client">2. Point your client</a>
+      <a href="#request">3. Send a request</a>
+      <a href="#controls">4. Establish controls</a>
+      <div><span>NEED THE OVERVIEW?</span><a href="enterprise.html">Explore Enterprise →</a></div>
+    </aside>
+
+    <article class="guide-content" id="top">
+      <p class="kicker"><i></i> QUICKSTART</p>
+      <h1>Get started with<br><em>Alloy Enterprise.</em></h1>
+      <p class="guide-intro">Connect the OpenAI-compatible client your team already uses. Set one organization key, point the client at AlloyAPI, and send requests as usual.</p>
+
+      <section class="approach-card" aria-label="Getting started overview">
+        <div><b>01</b><span>Store your organization key</span></div><i>→</i>
+        <div><b>02</b><span>Set the AlloyAPI base URL</span></div><i>→</i>
+        <div><b>03</b><span>Keep making standard requests</span></div>
+      </section>
+
+      <section id="key">
+        <p class="step-label">STEP 1</p>
+        <h2>Store your Alloy API key.</h2>
+        <p>Use the key assigned to your organization. Keep it in your deployment environment rather than in source control.</p>
+        <div class="command"><code>export ALLOY_API_KEY="your-organization-key"</code><button type="button" data-copy="export ALLOY_API_KEY=&quot;your-organization-key&quot;">Copy</button></div>
+        <aside class="note"><b>Why one key?</b><span>AlloyAPI uses it to associate requests with your organization’s routing and efficiency policies.</span></aside>
+      </section>
+
+      <section id="client">
+        <p class="step-label">STEP 2</p>
+        <h2>Point your client to AlloyAPI.</h2>
+        <p>Change the base URL and API key. The rest of your request shape stays compatible with the OpenAI SDK.</p>
+        <div class="code-example">
+          <div class="code-tabs" role="tablist" aria-label="Code language"><button type="button" role="tab" aria-selected="true" aria-controls="python-code" id="python-tab" data-tab="python-code">Python</button><button type="button" role="tab" aria-selected="false" aria-controls="node-code" id="node-tab" data-tab="node-code">Node.js</button></div>
+          <pre id="python-code" role="tabpanel" aria-labelledby="python-tab"><code><span class="dim">from</span> openai <span class="dim">import</span> OpenAI
+<span class="dim">import</span> os
+
+client = OpenAI(
+  base_url=<span class="green">"https://alloyapi.ai.studio/v1"</span>,
+  api_key=os.environ[<span class="green">"ALLOY_API_KEY"</span>],
+)</code></pre>
+          <pre id="node-code" role="tabpanel" aria-labelledby="node-tab" hidden><code><span class="dim">import</span> OpenAI <span class="dim">from</span> <span class="green">"openai"</span>;
+
+<span class="dim">const</span> client = <span class="dim">new</span> OpenAI({
+  baseURL: <span class="green">"https://alloyapi.ai.studio/v1"</span>,
+  apiKey: process.env.ALLOY_API_KEY,
+});</code></pre>
+          <button class="copy-code" type="button" data-copy-target="python-code">Copy code</button>
+        </div>
+      </section>
+
+      <section id="request">
+        <p class="step-label">STEP 3</p>
+        <h2>Send a standard request.</h2>
+        <p>Choose a model permitted by your organization’s route policy. Alloy applies configured optimization, routing, and telemetry before the provider receives the request.</p>
+        <div class="code-example request-code" id="request-code"><pre><code>response = client.chat.completions.create(
+  model=<span class="green">"gpt-4o-mini"</span>,
+  messages=[{<span class="green">"role"</span>: <span class="green">"user"</span>, <span class="green">"content"</span>: <span class="green">"Summarize this account."</span>}],
+  max_tokens=<span class="blue">150</span>,
+)
+
+print(response.choices[<span class="blue">0</span>].message.content)</code></pre><button class="copy-code" type="button" data-copy-target="request-code">Copy code</button></div>
+        <div class="success"><b>✓</b><span>Your existing messages, tools, streaming, and response handling remain in the same client workflow.</span></div>
+      </section>
+
+      <section id="controls">
+        <p class="step-label">STEP 4</p>
+        <h2>Establish the controls that matter.</h2>
+        <p>Use Alloy Enterprise to make the operating choices around model requests clear and consistent across teams.</p>
+        <div class="control-list"><div><b>Cost controls</b><span>Optimize context, set token envelopes, and route by policy.</span></div><div><b>Provider policy</b><span>Decide which models and upstream providers can serve each workload.</span></div><div><b>Data boundaries</b><span>Configure retention and cache behavior to match your deployment requirements.</span></div></div>
+      </section>
+
+      <section class="next-step"><p class="kicker"><i></i> YOU'RE CONNECTED</p><h2>One endpoint.<br><em>A clearer operating model.</em></h2><p>Return to the Enterprise overview to see how Alloy brings cost, routing, caching, and data-boundary decisions together.</p><a class="button primary" href="enterprise.html">Explore Enterprise <span>→</span></a></section>
+    </article>
+  </main>
+
+  <footer class="enterprise-footer"><a class="brand" href="index.html"><svg viewBox="0 0 32 32" aria-hidden="true"><path d="M7 24 16 5l9 19h-5.2L16 15.5 12.2 24Z"/><path d="M13.8 19h4.4"/></svg><span>alloy<span>SDK</span></span></a><p>Enterprise LLM efficiency infrastructure.</p><a href="enterprise.html">Enterprise overview →</a></footer>
+  <script type="module" src="enterprise-guide.js?v=20260911-1"></script>
+</body>
+</html>
