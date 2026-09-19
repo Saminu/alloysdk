@@ -7,7 +7,7 @@
 .gateway-terminal footer {
   min-height: 0;
   padding: 14px 18px;
-  background: #172727;
+  background: #171717;
 }
 
 .enterprise-link {
@@ -15,15 +15,15 @@
   gap: 16px;
   align-items: center;
   margin-top: 28px;
-  color: #d9f1e9;
+  color: #F5F3EE;
   font: 11px var(--mono);
   letter-spacing: .08em;
   text-decoration: none;
   text-transform: uppercase;
 }
 
-.enterprise-link span { color: #75e0bb; font-size: 18px; }
-.enterprise-link:hover { color: #75e0bb; }
+.enterprise-link span { color: #DDE2E6; font-size: 18px; }
+.enterprise-link:hover { color: #DDE2E6; }
 
 @media (max-width: 600px) {
   .gateway-terminal footer {

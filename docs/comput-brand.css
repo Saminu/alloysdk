@@ -1,0 +1,58 @@
+/* COMPUT v0.1: shared identity for the public site, not the SDK API. */
+:root {
+  --compute-black: #0A0A0A;
+  --signal-lime: #C7FF3D;
+  --warm-paper: #F5F3EE;
+  --system-mist: #DDE2E6;
+  --ink: var(--compute-black);
+  --ink-2: #171717;
+  --panel: #171717;
+  --paper: var(--warm-paper);
+  --white: var(--warm-paper);
+  --text: var(--warm-paper);
+  --line: #454545;
+  --muted: #b5b5b5;
+  --blue: var(--system-mist);
+  --green: var(--system-mist);
+  --mint: var(--system-mist);
+  --lime: var(--signal-lime);
+  --sans: 'Inter', Helvetica, sans-serif;
+  --serif: var(--sans);
+  --mono: 'JetBrains Mono', monospace;
+}
+body { line-height: 1.6; }
+.brand { font: 700 28px/1 var(--sans); letter-spacing: -.045em; padding: 12px 0; }
+h1, h2, .hero h1, .architecture h2, .section-intro h2, .gateway-copy h2 { font-family: var(--sans); font-weight: 700; letter-spacing: -.055em; }
+h1 em, h2 em, .gateway-copy h2 em, .implementation h2 em { color: inherit; font-style: normal; font-weight: 700; }
+.hero::before, .enterprise-hero::before { display: none; }
+.hero, .enterprise-hero, .enterprise-cta, .guide-layout { background: var(--compute-black); }
+.control-card, .next-step { background: #171717; }
+.button-primary, .button.primary, .nav-cta, .header-link, .button-light { background: var(--signal-lime); color: var(--compute-black); }
+.button-primary span, .button.primary span, .nav-cta span, .header-link span, .button-light span { color: inherit; }
+.eyebrow i, .kicker i, .proof-strip i { background: currentColor; }
+.hero-tags span::before, .hero-notes span::before { color: var(--system-mist); }
+.spend-content > strong, .card-bar b, .request-log strong, .approach-card b, .step-label { color: var(--warm-paper); }
+.spend-bars .optimized b { background: var(--system-mist); }
+.retention-flow i::before, .retention-flow i::after { border-color: var(--system-mist); }
+.savings-ring { background: conic-gradient(var(--system-mist) 0 var(--savings), #454545 var(--savings) 100%); }
+.savings-bar::after { background: #777; }
+.savings-bar-optimized::after { background: var(--system-mist); }
+.savings-ring { box-shadow: none; }
+.guide-content > section.approach-card { padding: 20px 23px; }
+input { accent-color: #0A0A0A; }
+a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible { outline: 3px solid #777; outline-offset: 4px; }
+.comput-domains { padding: 56px clamp(22px,5vw,76px); display: flex; flex-wrap: wrap; gap: 24px 48px; background: var(--warm-paper); color: var(--compute-black); border-top: 1px solid #b5b5b5; }
+.comput-domains p, .comput-domains small { flex-basis: 100%; margin: 0; }
+.comput-domains p { font-weight: 700; }
+.comput-domains a { font: 500 18px var(--mono); text-decoration: none; }
+.comput-domains span { display: block; margin-top: 10px; font: 14px var(--sans); }
+.comput-domains small { color: #555; }
+@media (max-width: 600px) {
+  .hero-tags { flex-wrap: wrap; }
+  .hero h1 { font-size: clamp(38px, 10vw, 54px); }
+  .brand { font-size: 25px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+}
