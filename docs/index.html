@@ -7,19 +7,25 @@
   <meta name="description" content="Reduce avoidable AI spend, govern access and keep usage in view. COMPUT brings your models, API keys, routing and cost insights into one workspace.">
   <meta name="theme-color" content="#0A0A0A">
   <link rel="canonical" href="https://comput.cloud/">
-  <link rel="stylesheet" href="cost-control.css?v=20260922">
+  <link rel="stylesheet" href="cost-control.css?v=20260922-hero">
+  <link rel="stylesheet" href="hero-art.css?v=20260922-motion">
 </head>
 <body>
   <a class="skip" href="#main">Skip to content</a>
-  <header id="top"><a class="brand" href="#top" aria-label="COMPUT home">COMPUT<span aria-hidden="true">.</span></a><nav aria-label="Main navigation"><a href="#costs">Cost savings</a><a href="#governance">Governance</a><a href="https://app.comput.cloud/docs">Docs</a></nav><a class="button" href="https://app.comput.cloud/home">Open dashboard &rarr;</a></header>
+  <header id="top"><a class="brand" href="#top" aria-label="COMPUT home">COMPUT<span aria-hidden="true">.</span></a><nav aria-label="Main navigation"><a href="#how-it-works">How it works</a><a href="#costs">Cost control</a><a href="#governance">Security</a><a href="https://app.comput.cloud/docs">Docs</a></nav><a class="button" href="https://app.comput.cloud/dashboard/keys">Get API key &rarr;</a></header>
   <main id="main">
     <section class="hero">
-<div><p class="eyebrow">AI COST CONTROL / COMPUT</p><h1>The cost &amp; security<br><em>control layer</em><br>for your AI.</h1><p class="lead">Reduce avoidable AI spend, govern access and control how your data reaches model providers. One gateway between your applications and your AI providers.</p><div class="actions"><a class="button" href="https://app.comput.cloud/home">Open dashboard &rarr;</a><a href="#costs">See how it works &darr;</a></div><p class="note">For existing workspace users. Public account registration is not available yet.</p></div>
-      <aside class="control-map" aria-label="How COMPUT connects visibility, controls and review"><p class="eyebrow">THE COST CONTROL LOOP</p><ol><li><span>01 / SEE</span><h2>Know what gets used.</h2><p>Recorded tokens, model usage and estimated spend.</p></li><li><span>02 / CONTROL</span><h2>Decide how it runs.</h2><p>Provider connections, client keys and routing settings.</p></li><li><span>03 / REVIEW</span><h2>Make better decisions.</h2><p>Inspect requests and compare cost with response quality.</p></li></ol><p class="note">A workflow, not a promise of automatic savings.</p></aside>
+      <div class="hero-copy"><p class="eyebrow">AI COST CONTROL / COMPUT</p><h1>The cost &amp; security<br><em>control layer</em><br>for your AI.</h1><p class="lead">Reduce avoidable AI spend, govern access and control how your data reaches model providers. One gateway between your applications and your AI providers.</p><div class="actions"><a class="button" href="https://app.comput.cloud/dashboard/keys">Get API key &rarr;</a><a href="#how-it-works">See how it works &darr;</a></div><p class="note">Already have a workspace? Sign in to create a key. New workspaces are invite-only.</p></div>
+      <figure class="hero-art" aria-hidden="true">
+        <img src="control-flow.jpg" width="1536" height="1024" alt="" fetchpriority="high" decoding="async">
+        <canvas class="hero-particles"></canvas>
+      </figure>
+      <button class="hero-motion" type="button" aria-pressed="false">Pause motion</button>
     </section>
     <section class="section light" aria-labelledby="market-title">
       <p class="eyebrow">THE SPENDING CONTEXT / 2025 RESEARCH</p>
       <h2 id="market-title">AI investment is growing.<br>Cost discipline needs to follow.</h2>
+      <p class="section-intro">As AI usage spreads across teams and providers, it gets harder to know what each request costs or where the data goes. Start with visibility, then set boundaries.</p>
       <div class="cards market-stats">
         <article><strong>$37B</strong><h3>Enterprise generative AI spend</h3><p>Menlo Ventures' estimate of enterprise spending in 2025, across models, infrastructure and applications.</p></article>
         <article><strong>3.2&times;</strong><h3>Year-over-year growth</h3><p>Up from a restated $11.5B in 2024, using the report's comparable spending definition.</p></article>
@@ -27,10 +33,10 @@
       </div>
       <p class="market-source">Source: <a href="https://menlovc.com/perspective/2025-the-state-of-generative-ai-in-the-enterprise/" target="_blank" rel="noopener noreferrer">Menlo Ventures, 2025 State of Generative AI in the Enterprise</a>. Market estimates, not average spend per company or COMPUT customer results. Rising total spend does not imply rising per-token prices. Savings vary by workload and configuration.</p>
     </section>
-    <section class="section flow-section" aria-labelledby="flow-title">
+    <section id="how-it-works" class="section flow-section" aria-labelledby="flow-title">
       <p class="eyebrow">BETWEEN YOUR APP AND YOUR MODELS</p>
       <h2 id="flow-title">One place to route.<br>One place to stay in control.</h2>
-      <p class="flow-description">Your application sends a request to COMPUT. The gateway applies configured controls, routes it to a provider and records usage for review.</p>
+      <p class="flow-description">Your application sends a request to COMPUT. The gateway applies configured controls, routes it to a provider and records usage for review. The animated path below is an illustration, not live traffic.</p>
       <div class="request-flow" role="img" aria-label="Illustrative request flow: your application sends a request through COMPUT access controls, routing and usage tracking to a model provider. The response returns through COMPUT to your application.">
         <svg class="route-diagram" viewBox="0 0 1000 360" aria-hidden="true">
           <defs><radialGradient id="route-glow"><stop stop-color="#c7ff3d" stop-opacity=".13"/><stop offset="1" stop-color="#c7ff3d" stop-opacity="0"/></radialGradient></defs>
@@ -46,7 +52,18 @@
       </div>
       <div class="flow-caption"><p class="note">Illustrative architecture, not live traffic. Provider access and controls depend on your configuration.</p><button id="flow-motion" type="button" aria-pressed="false">Pause animation</button></div>
     </section>
-    <section id="costs" class="section light"><p class="eyebrow">SPEND LESS ON AVOIDABLE WORK</p><h2>A smaller bill starts<br>with a clearer picture.</h2><div class="cards"><article><span>01</span><h3>Find the expensive requests</h3><p>Look at model usage, recorded tokens and estimated spend before deciding where to optimize.</p></article><article><span>02</span><h3>Choose models deliberately</h3><p>Test models in the playground. Compare their responses and latency against what your workload actually needs.</p></article><article><span>03</span><h3>Keep spending accountable</h3><p>Manage client access and configure spending controls in one place, rather than leaving usage scattered across applications.</p></article></div></section>
+    <section id="costs" class="section light"><p class="eyebrow">SPEND LESS ON AVOIDABLE WORK</p><h2>A smaller bill starts<br>with a clearer picture.</h2><p class="section-intro">See where tokens and money go. Then decide which requests, models and limits are worth changing.</p><div class="cards"><article><span>01</span><h3>Find the expensive requests</h3><p>Look at model usage, recorded tokens and estimated spend before deciding where to optimize.</p></article><article><span>02</span><h3>Choose models deliberately</h3><p>Test models in the playground. Compare their responses and latency against what your workload actually needs.</p></article><article><span>03</span><h3>Keep spending accountable</h3><p>Manage client access and configure spending controls in one place, rather than leaving usage scattered across applications.</p></article></div></section>
+    <section id="integration" class="section integration"><p class="eyebrow">A FAMILIAR API. A CENTRAL CONTROL POINT.</p><div class="split"><div><h2>Connect your app.<br>Keep your workflow.</h2><p class="lead">Use a COMPUT client key and an OpenAI-compatible base URL, then choose a configured model. Validate the features your application needs against that model and provider.</p><p class="note">Use server-side environment variables. Never embed API keys in browser code.</p><a href="https://app.comput.cloud/docs/getting-started/QUICK-START">Read the quick start &rarr;</a></div><div class="connection-code"><div class="code-heading"><span>Server-side JavaScript</span><button type="button" data-copy="connection-example">Copy example</button></div><pre><code id="connection-example">import OpenAI from "openai";
+
+const client = new OpenAI({
+  baseURL: "https://api.comput.cloud/v1",
+  apiKey: process.env.COMPUT_API_KEY,
+});
+
+const result = await client.chat.completions.create({
+  model: "groq/openai/gpt-oss-20b",
+  messages: [{ role: "user", content: "Hello COMPUT" }],
+});</code></pre><p class="note">Example requires a configured Groq connection and a valid COMPUT client key. Provider charges and limits may apply.</p><p id="copy-status" role="status"></p></div></div></section>
     <section id="governance" class="section"><p class="eyebrow">GOVERNANCE WITHOUT THE GUESSWORK</p><div class="split"><h2>Your providers.<br>Your rules.<br><em>Your visibility.</em></h2><div class="rows"><article><h3>Control access</h3><p>Create and manage client API keys. Keep provider credentials separate from application credentials.</p></article><article><h3>Set boundaries</h3><p>Review security, budgets and routing configuration from the gateway console.</p></article><article><h3>Understand what happened</h3><p>Use request history and available audit records to investigate errors, usage and configuration activity.</p></article></div></div></section>
     <section id="guardrails" class="section" aria-labelledby="guardrails-title">
       <p class="eyebrow">SECURITY / INTELLECTUAL PROPERTY / DATA EXPOSURE</p>
@@ -65,19 +82,8 @@
       <article class="boundary-card"><div class="boundary-visual" aria-hidden="true"><span>PRIMARY ROUTE</span><b>+</b><span>FALLBACKS</span></div><h3>Review the whole route</h3><p>A fallback or retry may reach another configured provider. Include every potential destination when approving sensitive workloads.</p></article>
       <article class="boundary-card"><div class="boundary-visual" aria-hidden="true"><span>CACHE POLICY</span><b>?</b><span>VERIFY</span></div><h3>Make caching an explicit choice</h3><p>Review gateway and provider caching separately. Confirm eligibility, retention and access boundaries before using caches for confidential content.</p></article>
     </div></section>
-    <section id="integration" class="section integration"><p class="eyebrow">A FAMILIAR API. A CENTRAL CONTROL POINT.</p><div class="split"><div><h2>Connect your app.<br>Keep your workflow.</h2><p class="lead">Set your base URL and COMPUT client key, then choose a configured model. Validate the features your application uses against that model and provider.</p><p class="note">Use server-side environment variables. Never embed API keys in browser code.</p><a href="https://app.comput.cloud/docs/getting-started/QUICK-START">Read the quick start &rarr;</a></div><div class="connection-code"><div class="code-heading"><span>Server-side JavaScript</span><button type="button" data-copy="connection-example">Copy example</button></div><pre><code id="connection-example">import OpenAI from "openai";
-
-const client = new OpenAI({
-  baseURL: "https://api.comput.cloud/v1",
-  apiKey: process.env.COMPUT_API_KEY,
-});
-
-const result = await client.chat.completions.create({
-  model: "groq/openai/gpt-oss-20b",
-  messages: [{ role: "user", content: "Hello COMPUT" }],
-});</code></pre><p class="note">Example requires a configured Groq connection and a valid COMPUT client key. Provider charges and limits may apply.</p><p id="copy-status" role="status"></p></div></div></section>
     <section class="section evidence"><p class="eyebrow">MEASUREMENT BEFORE MARKETING</p><h2>Savings should be measured.<br>Not assumed.</h2><p class="lead">A lower token count is not the whole story. Compare equivalent workloads, check response quality and account for retries. COMPUT displays recorded usage and rate-based cost estimates; those estimates are not provider invoices or verified savings.</p><a href="https://app.comput.cloud/docs/guides/COST_TRACKING">Read about cost tracking &rarr;</a></section>
-    <section class="section closing"><p class="eyebrow">ONE WORKSPACE. A CLEARER VIEW.</p><h2>Put your AI spend<br>under control.</h2><a class="button" href="https://app.comput.cloud/home">Open dashboard &rarr;</a><p class="note">Already have access? Sign in with your workspace credentials.</p></section>
+    <section class="section closing"><p class="eyebrow">ONE WORKSPACE. A CLEARER VIEW.</p><h2>Put your AI spend<br>under control.</h2><a class="button" href="https://app.comput.cloud/dashboard/keys">Get API key &rarr;</a><p class="note">Sign in to create a key. New workspaces are invite-only for now.</p></section>
   </main>
   <footer><a class="brand" href="#top">COMPUT<span>.</span></a><p>Lower AI costs. Put security first.</p><a href="https://app.comput.cloud/docs">Documentation</a><a href="https://app.comput.cloud/home">Dashboard</a><small>&copy; 2026 COMPUT</small></footer>
   <script src="cost-control.js" defer></script>
