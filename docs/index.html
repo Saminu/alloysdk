@@ -2,116 +2,84 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>COMPUT — The efficiency layer for AI compute.</title>
-  <meta name="description" content="COMPUT SDK and COMPUT Gateway reduce avoidable LLM token spend, safely reuse repeat work, and route provider-ready payloads without changing application intent.">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>COMPUT | Lower AI costs. Put security first.</title>
+  <meta name="description" content="Reduce avoidable AI spend, govern access and keep usage in view. COMPUT brings your models, API keys, routing and cost insights into one workspace.">
   <meta name="theme-color" content="#0A0A0A">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css?v=20260919-1">
-  <link rel="stylesheet" href="gateway.css?v=20260919-1">
-  <link rel="stylesheet" href="hero-savings.css?v=20260919-1">
-  <link rel="stylesheet" href="comput-brand.css?v=20260919-1">
+  <link rel="canonical" href="https://comput.cloud/">
+  <link rel="stylesheet" href="cost-control.css?v=20260922">
 </head>
 <body>
-  <div class="notice-bar"><span>[ COMPUT LAYER ]</span> Reduce token waste before every LLM request reaches a provider.</div>
-  <header class="site-header">
-    <a class="brand" href="#top" aria-label="COMPUT SDK home"><span>COMPUT</span></a>
-    <nav class="nav" aria-label="Primary navigation"><a href="#playground">SDK demo</a><a href="#architecture">Architecture</a><a href="#alloyapi">COMPUT Gateway</a><a href="enterprise.html">Enterprise</a><a href="https://app.comput.cloud/docs">Docs</a></nav>
-    <a class="nav-cta" href="https://app.comput.cloud/home">Open dashboard <span aria-hidden="true">→</span></a>
-  </header>
-  <main id="top">
+  <a class="skip" href="#main">Skip to content</a>
+  <header id="top"><a class="brand" href="#top" aria-label="COMPUT home">COMPUT<span aria-hidden="true">.</span></a><nav aria-label="Main navigation"><a href="#costs">Cost savings</a><a href="#governance">Governance</a><a href="https://app.comput.cloud/docs">Docs</a></nav><a class="button" href="https://app.comput.cloud/home">Open dashboard &rarr;</a></header>
+  <main id="main">
     <section class="hero">
-      <div class="hero-copy">
-        <p class="eyebrow"><i></i> LLM EFFICIENCY LAYER</p>
-        <h1>Make every<br><em>token compute.</em></h1>
-        <p class="hero-description">COMPUT SDK removes avoidable token overhead and safely reuses repeat work. COMPUT Gateway puts that same optimization and routing behind one OpenAI-compatible endpoint.</p>
-        <div class="hero-actions"><a href="https://app.comput.cloud/home" class="button button-primary">Open dashboard <span aria-hidden="true">→</span></a><a href="#playground" class="button button-quiet">Try the SDK demo</a></div>
-        <p class="hero-description">Already have workspace access? Sign in to create API keys, test models and view request history.</p>
-        <div class="hero-tags"><span>Less input waste</span><span>OpenAI-compatible</span><span>vLLM-ready</span></div>
-      </div>
-      <div class="hero-visual savings-panel" id="hero-savings-panel" aria-label="Live token-savings preview">
-        <div class="savings-panel-header"><span>ESTIMATED SAVINGS PREVIEW</span><span>REQUEST ANALYZED</span></div>
-        <div class="savings-panel-body">
-          <div class="savings-ring" aria-hidden="true"><div><strong id="hero-savings">—</strong><span>LESS INPUT</span></div></div>
-          <div class="savings-comparison">
-            <div class="savings-row"><div><span>ORIGINAL CONTEXT</span><b id="hero-raw-tokens">— TOK</b></div><i class="savings-bar savings-bar-raw"></i></div>
-            <div class="savings-row"><div><span>COMPUT CONTEXT</span><b id="hero-optimized-tokens">— TOK</b></div><i class="savings-bar savings-bar-optimized"></i></div>
-            <p><strong id="hero-tokens-saved">—</strong> tokens removed before routing</p>
-          </div>
-        </div>
-        <div class="savings-panel-footer"><span>LOCAL PAYLOAD PREVIEW</span><span>✓ PROVIDER-READY</span></div>
-      </div>
+<div><p class="eyebrow">AI COST CONTROL / COMPUT</p><h1>The cost &amp; security<br><em>control layer</em><br>for your AI.</h1><p class="lead">Reduce avoidable AI spend, govern access and control how your data reaches model providers. One gateway between your applications and your AI providers.</p><div class="actions"><a class="button" href="https://app.comput.cloud/home">Open dashboard &rarr;</a><a href="#costs">See how it works &darr;</a></div><p class="note">For existing workspace users. Public account registration is not available yet.</p></div>
+      <aside class="control-map" aria-label="How COMPUT connects visibility, controls and review"><p class="eyebrow">THE COST CONTROL LOOP</p><ol><li><span>01 / SEE</span><h2>Know what gets used.</h2><p>Recorded tokens, model usage and estimated spend.</p></li><li><span>02 / CONTROL</span><h2>Decide how it runs.</h2><p>Provider connections, client keys and routing settings.</p></li><li><span>03 / REVIEW</span><h2>Make better decisions.</h2><p>Inspect requests and compare cost with response quality.</p></li></ol><p class="note">A workflow, not a promise of automatic savings.</p></aside>
     </section>
-    <section class="proof-strip" aria-label="COMPUT SDK properties"><p><i></i> ONE EFFICIENCY LAYER FOR EVERY LLM REQUEST</p><div><span>LEANER PAYLOADS</span><span>SAFE CACHE REUSE</span><span>PROVIDER PORTABILITY</span><span>REQUEST COALESCING</span></div></section>
-    <section class="section playground" id="playground">
-      <div class="section-intro"><p class="eyebrow"><i></i> IN BROWSER</p><h2>See savings.<br><em>Before launch.</em></h2><p>See exactly what COMPUT removes, then inspect the provider-ready payload. Everything runs locally—no API key or prompt is sent anywhere.</p></div>
-      <div class="playground-workbench">
-        <div class="control-row">
-          <label>EXAMPLE<select id="preset-select"><option value="underwriting">Underwriting payload</option><option value="devops">DevOps context</option><option value="medical">Clinical record</option><option value="rag">RAG context</option></select></label>
-          <label>TARGET<select id="provider-select"><option value="gemini">Google Gemini</option><option value="anthropic">Anthropic Claude</option><option value="openai">OpenAI</option><option value="vllm">vLLM</option></select></label>
-          <div class="toggles" aria-label="Optimization options"><label><input type="checkbox" id="toggle-code" checked> Code blocks</label><label><input type="checkbox" id="toggle-json" checked> JSON</label><label><input type="checkbox" id="toggle-markdown" checked> Markdown</label></div>
-        </div>
-        <div class="editor-grid">
-          <article class="code-card input-card"><header><span><i class="dot"></i> RAW REQUEST</span><b id="raw-token-badge">—</b></header><textarea id="prompt-input" spellcheck="false" aria-label="Raw prompt"></textarea></article>
-          <article class="code-card output-card"><header><span><i class="dot"></i> COMPUT OUTPUT <small id="provider-output-badge">—</small></span><button id="btn-copy-optimized" type="button">Copy</button></header><pre id="optimized-output"><code>Optimizing…</code></pre></article>
-        </div>
-        <div class="telemetry"><div><span>CHARS REMOVED</span><strong id="stat-chars-saved">0</strong></div><div><span>EST. TOKENS SAVED</span><strong id="stat-tokens-saved">0</strong></div><div><span>REDUCTION</span><strong id="stat-percent-saved">0%</strong></div><div><span>EST. SAVED / 1M</span><strong id="stat-cost-saved">$0.00</strong></div></div>
-        <div class="smoke-test"><div><p class="eyebrow"><i></i> SELF CHECK</p><h3>Trust the transformation.</h3><p>Run three browser checks for YAML indentation, message order, and duplicate-request coalescing.</p></div><div><button class="button button-light" id="btn-run-live-test" type="button">Run smoke test <span>→</span></button><pre id="live-test-result" aria-live="polite">Ready.</pre></div></div>
+    <section class="section light" aria-labelledby="market-title">
+      <p class="eyebrow">THE SPENDING CONTEXT / 2025 RESEARCH</p>
+      <h2 id="market-title">AI investment is growing.<br>Cost discipline needs to follow.</h2>
+      <div class="cards market-stats">
+        <article><strong>$37B</strong><h3>Enterprise generative AI spend</h3><p>Menlo Ventures' estimate of enterprise spending in 2025, across models, infrastructure and applications.</p></article>
+        <article><strong>3.2&times;</strong><h3>Year-over-year growth</h3><p>Up from a restated $11.5B in 2024, using the report's comparable spending definition.</p></article>
+        <article><strong>$19B</strong><h3>Spent on AI applications</h3><p>The report's estimate for the application layer in 2025, rather than model API charges alone.</p></article>
       </div>
+      <p class="market-source">Source: <a href="https://menlovc.com/perspective/2025-the-state-of-generative-ai-in-the-enterprise/" target="_blank" rel="noopener noreferrer">Menlo Ventures, 2025 State of Generative AI in the Enterprise</a>. Market estimates, not average spend per company or COMPUT customer results. Rising total spend does not imply rising per-token prices. Savings vary by workload and configuration.</p>
     </section>
-    <section class="architecture" id="architecture">
-      <div class="architecture-heading"><p class="eyebrow"><i></i> THE COMPUT REQUEST PATH</p><h2>How COMPUT earns<br><em>the savings.</em></h2></div>
-      <div class="layer-diagram" aria-label="Five-layer COMPUT SDK request architecture">
-        <div class="diagram-label">INCOMING REQUEST</div><div class="diagram-arrow">↓</div>
-        <article><b>01</b><div><h3>Context normalization</h3><p>Minify embedded JSON and remove redundant prompt padding while keeping indentation intact.</p></div><span>INPUT</span></article><div class="diagram-arrow">↓</div>
-        <article><b>02</b><div><h3>Request identity</h3><p>Build deterministic, JSON-safe cache keys and decline unsafe payloads.</p></div><span>SAFETY</span></article><div class="diagram-arrow">↓</div>
-        <article><b>03</b><div><h3>Local response cache</h3><p>Use TTL-aware LRU storage and coalesce matching in-flight work.</p></div><span>MEMORY</span></article><div class="diagram-arrow">↓</div>
-        <article><b>04</b><div><h3>Provider adaptation</h3><p>Produce Gemini, Anthropic, OpenAI, or vLLM-ready payloads without rewriting history.</p></div><span>ROUTING</span></article><div class="diagram-arrow">↓</div>
-        <article><b>05</b><div><h3>Token envelope</h3><p>Apply an explicit output cap, then return usage and optimization telemetry.</p></div><span>OUTPUT</span></article>
+    <section class="section flow-section" aria-labelledby="flow-title">
+      <p class="eyebrow">BETWEEN YOUR APP AND YOUR MODELS</p>
+      <h2 id="flow-title">One place to route.<br>One place to stay in control.</h2>
+      <p class="flow-description">Your application sends a request to COMPUT. The gateway applies configured controls, routes it to a provider and records usage for review.</p>
+      <div class="request-flow" role="img" aria-label="Illustrative request flow: your application sends a request through COMPUT access controls, routing and usage tracking to a model provider. The response returns through COMPUT to your application.">
+        <svg class="route-diagram" viewBox="0 0 1000 360" aria-hidden="true">
+          <defs><radialGradient id="route-glow"><stop stop-color="#c7ff3d" stop-opacity=".13"/><stop offset="1" stop-color="#c7ff3d" stop-opacity="0"/></radialGradient></defs>
+          <ellipse cx="460" cy="180" rx="240" ry="170" fill="url(#route-glow)"/>
+          <g class="route-lines"><path d="M210 180H345"/><path d="M575 180C660 180 665 50 790 50"/><path d="M575 180C675 180 680 135 790 135"/><path d="M575 180C675 180 680 220 790 220"/><path d="M575 180C660 180 665 305 790 305"/></g>
+          <path class="route-active" d="M210 180H345M575 180C660 180 665 305 790 305"/>
+          <path class="route-return" d="M790 318C665 318 660 193 575 193M345 193H210"/>
+          <rect x="20" y="135" width="190" height="100" rx="18" class="diagram-box"/><text x="115" y="178" class="diagram-title">Your application</text><text x="115" y="207" class="diagram-small">One API endpoint</text>
+          <rect x="345" y="95" width="230" height="175" rx="24" class="diagram-core"/><text x="460" y="142" class="diagram-brand">COMPUT</text><text x="460" y="179" class="diagram-small">Access controls</text><text x="460" y="206" class="diagram-small">Model routing</text><text x="460" y="233" class="diagram-small">Usage tracking</text>
+          <g class="diagram-provider"><rect x="790" y="20" width="190" height="60" rx="14"/><text x="885" y="57">OpenAI</text><rect x="790" y="105" width="190" height="60" rx="14"/><text x="885" y="142">Anthropic</text><rect x="790" y="190" width="190" height="60" rx="14"/><text x="885" y="227">Google</text></g>
+          <rect x="790" y="275" width="190" height="60" rx="14" class="diagram-core"/><text x="885" y="301" class="diagram-title">Groq</text><text x="885" y="321" class="diagram-small">Illustrative selected route</text>
+        </svg>
       </div>
+      <div class="flow-caption"><p class="note">Illustrative architecture, not live traffic. Provider access and controls depend on your configuration.</p><button id="flow-motion" type="button" aria-pressed="false">Pause animation</button></div>
     </section>
-    <section class="api-gateway" id="alloyapi">
-      <div class="gateway-signals"><span>{ }</span><span>OPENAI SDK COMPATIBLE</span><span>▣</span><span>ENTERPRISE CONTROLS</span><span>↘</span><span>COST VISIBILITY</span></div>
-      <div class="gateway-body">
-        <div class="gateway-copy"><p class="eyebrow"><i></i> COMPUT GATEWAY · ENTERPRISE GATEWAY</p><h2>Control AI cost.<br><em>Across every team.</em></h2><p>Centralize COMPUT’s token optimization, model routing, and usage visibility behind one OpenAI-compatible endpoint. Change only your base URL and API key; teams keep their clients and workflows.</p><div class="endpoint"><span>BASE URL / REPLACE WITH YOUR DEPLOYMENT</span><code>https://your-gateway.example/v1</code></div><div class="gateway-notes"><span>✓ One COMPUT API key</span><span>✓ Per-request model routing</span><span>✓ Usage telemetry</span></div><a class="enterprise-link" href="enterprise.html">Explore COMPUT Enterprise <span>→</span></a></div>
-        <div class="gateway-terminal"><header><span>comput-gateway.py</span><button id="btn-copy-api" type="button">Copy</button></header><pre id="api-code"><code><span class="c-dim">from</span> openai <span class="c-dim">import</span> OpenAI
-<span class="c-dim">import</span> os
-
-client = OpenAI(
-  base_url=<span class="c-green">"https://your-gateway.example/v1"</span>,
-  api_key=os.environ[<span class="c-green">"COMPUT_API_KEY"</span>],
-)
-
-response = client.chat.completions.create(
-  model=<span class="c-green">"gpt-4o-mini"</span>,
-  messages=[{<span class="c-green">"role"</span>: <span class="c-green">"user"</span>, <span class="c-green">"content"</span>: <span class="c-green">"Hello via COMPUT Gateway proxy!"</span>}],
-  max_tokens=<span class="c-blue">150</span>,
-)
-
-print(response.choices[<span class="c-blue">0</span>].message.content)</code></pre><footer><span>OPENAI-COMPATIBLE</span><span>YOUR KEY STAYS IN YOUR ENVIRONMENT</span></footer></div>
+    <section id="costs" class="section light"><p class="eyebrow">SPEND LESS ON AVOIDABLE WORK</p><h2>A smaller bill starts<br>with a clearer picture.</h2><div class="cards"><article><span>01</span><h3>Find the expensive requests</h3><p>Look at model usage, recorded tokens and estimated spend before deciding where to optimize.</p></article><article><span>02</span><h3>Choose models deliberately</h3><p>Test models in the playground. Compare their responses and latency against what your workload actually needs.</p></article><article><span>03</span><h3>Keep spending accountable</h3><p>Manage client access and configure spending controls in one place, rather than leaving usage scattered across applications.</p></article></div></section>
+    <section id="governance" class="section"><p class="eyebrow">GOVERNANCE WITHOUT THE GUESSWORK</p><div class="split"><h2>Your providers.<br>Your rules.<br><em>Your visibility.</em></h2><div class="rows"><article><h3>Control access</h3><p>Create and manage client API keys. Keep provider credentials separate from application credentials.</p></article><article><h3>Set boundaries</h3><p>Review security, budgets and routing configuration from the gateway console.</p></article><article><h3>Understand what happened</h3><p>Use request history and available audit records to investigate errors, usage and configuration activity.</p></article></div></div></section>
+    <section id="guardrails" class="section" aria-labelledby="guardrails-title">
+      <p class="eyebrow">SECURITY / INTELLECTUAL PROPERTY / DATA EXPOSURE</p>
+      <h2 id="guardrails-title">Control more than cost.<br>Know what leaves your workspace.</h2>
+      <p class="lead">A prompt can contain customer records, confidential documents, proprietary code or credentials. Before sending it to a commercial AI service, decide what may be shared, which providers are approved and what must stay private.</p>
+      <div class="cards security-cards">
+        <article><span>01 / SENSITIVE DATA</span><h3>Keep secrets out of prompts</h3><p>Minimize personal and confidential information before a request leaves your application. Remove credentials and use approved redaction or anonymization where appropriate. Treat logs and cached responses as potentially sensitive too.</p></article>
+        <article><span>02 / INTELLECTUAL PROPERTY</span><h3>Protect the work that is yours</h3><p>Source code, product plans and internal research deserve explicit sharing rules. Confirm permission to send the material, review provider terms and choose approved destinations for proprietary workloads.</p></article>
+        <article><span>03 / PROVIDER BOUNDARIES</span><h3>Review where data goes</h3><p>Check the specific service's retention, training-use and processing-location settings. Review fallback routes as well as the primary provider; a routing decision is also a data-sharing decision.</p></article>
       </div>
-      <div class="gateway-providers"><span>ONE GATEWAY · EVERY PROVIDER</span><b>OpenAI</b><b>Anthropic</b><b>Google</b><b>vLLM</b><b>Any OpenAI-compatible endpoint</b></div>
+      <div class="guardrail-note"><h3>A gateway is a control point, not a privacy guarantee.</h3><p>COMPUT brings client-key management, routing configuration, security settings and available audit records into one console. Requests routed to external providers still leave your infrastructure. Do not assume automatic sensitive-data redaction, zero retention, data residency or compliance guarantees: verify the protections configured for your deployment and each provider before sending sensitive workloads.</p><a href="https://app.comput.cloud/dashboard/governance">Review governance controls &rarr;</a></div>
     </section>
-    <section class="section integration" id="integration">
-      <div class="section-intro"><p class="eyebrow"><i></i> INTEGRATION</p><h2>In your app.<br><em>At your edge.</em></h2><p>Use COMPUT SDK (currently published as <code>alloy-sdk</code>) where you own the code, or COMPUT Gateway for centralized control. Either way, requests become leaner before they reach a provider.</p></div>
-      <div class="integration-console"><div class="console-bar"><span>COMPUT SDK / quickstart.js</span><span>NODE</span></div><pre><code><span class="c-dim">import</span> { Alloy } <span class="c-dim">from</span> <span class="c-green">'alloy-sdk'</span>;
+    <section class="section" aria-labelledby="boundaries-title"><p class="eyebrow">FOLLOW THE DATA</p><h2 id="boundaries-title">Understand every boundary.</h2><div class="boundary-grid">
+      <article class="boundary-card"><div class="mini-log" aria-hidden="true"><span>request metadata</span><code>model / status / duration<br>input tokens / output tokens<br>estimated cost</code><small>Illustrative fields, not a live log</small></div><h3>Know what is recorded</h3><p>Usage metadata and request content are different. Review logging settings and storage permissions; do not assume prompt and response bodies are excluded everywhere.</p></article>
+      <article class="boundary-card"><div class="boundary-visual" aria-hidden="true"><span>YOUR WORKSPACE</span><b>&rarr;</b><span>PROVIDER</span></div><h3>Retention is a provider decision too</h3><p>Check retention and training-use terms for the exact provider service and account. A gateway alone does not establish zero-data-retention guarantees.</p></article>
+      <article class="boundary-card"><div class="boundary-visual" aria-hidden="true"><span>PRIMARY ROUTE</span><b>+</b><span>FALLBACKS</span></div><h3>Review the whole route</h3><p>A fallback or retry may reach another configured provider. Include every potential destination when approving sensitive workloads.</p></article>
+      <article class="boundary-card"><div class="boundary-visual" aria-hidden="true"><span>CACHE POLICY</span><b>?</b><span>VERIFY</span></div><h3>Make caching an explicit choice</h3><p>Review gateway and provider caching separately. Confirm eligibility, retention and access boundaries before using caches for confidential content.</p></article>
+    </div></section>
+    <section id="integration" class="section integration"><p class="eyebrow">A FAMILIAR API. A CENTRAL CONTROL POINT.</p><div class="split"><div><h2>Connect your app.<br>Keep your workflow.</h2><p class="lead">Set your base URL and COMPUT client key, then choose a configured model. Validate the features your application uses against that model and provider.</p><p class="note">Use server-side environment variables. Never embed API keys in browser code.</p><a href="https://app.comput.cloud/docs/getting-started/QUICK-START">Read the quick start &rarr;</a></div><div class="connection-code"><div class="code-heading"><span>Server-side JavaScript</span><button type="button" data-copy="connection-example">Copy example</button></div><pre><code id="connection-example">import OpenAI from "openai";
 
-<span class="c-dim">const</span> alloy = <span class="c-dim">new</span> Alloy({
-  defaultProvider: <span class="c-green">'vllm'</span>,
-  cacheTTLMs: <span class="c-blue">300000</span>
+const client = new OpenAI({
+  baseURL: "https://api.comput.cloud/v1",
+  apiKey: process.env.COMPUT_API_KEY,
 });
 
-<span class="c-dim">const</span> response = <span class="c-dim">await</span> alloy.execute(
-  payload =&gt; client.chat.completions.create(payload),
-  { messages },
-  { provider: <span class="c-green">'vllm'</span> }
-);</code></pre><div class="console-footer"><span>✓ ORDER PRESERVED</span><span>✓ CACHE SAFE</span><a href="https://github.com/Saminu/alloysdk" target="_blank" rel="noopener noreferrer">Read README ↗</a></div></div>
-    </section>
-    <section class="comput-domains" aria-label="COMPUT ecosystem"><p>The COMPUT ecosystem</p><a href="https://comput.cloud">comput.cloud <span>Platform / company</span></a><a href="https://comput.codes">comput.codes <span>SDKs / documentation</span></a><a href="https://comput.host">comput.host <span>Runtime / inference</span></a><small>Domain roles. Service availability depends on deployment.</small></section>
+const result = await client.chat.completions.create({
+  model: "groq/openai/gpt-oss-20b",
+  messages: [{ role: "user", content: "Hello COMPUT" }],
+});</code></pre><p class="note">Example requires a configured Groq connection and a valid COMPUT client key. Provider charges and limits may apply.</p><p id="copy-status" role="status"></p></div></div></section>
+    <section class="section evidence"><p class="eyebrow">MEASUREMENT BEFORE MARKETING</p><h2>Savings should be measured.<br>Not assumed.</h2><p class="lead">A lower token count is not the whole story. Compare equivalent workloads, check response quality and account for retries. COMPUT displays recorded usage and rate-based cost estimates; those estimates are not provider invoices or verified savings.</p><a href="https://app.comput.cloud/docs/guides/COST_TRACKING">Read about cost tracking &rarr;</a></section>
+    <section class="section closing"><p class="eyebrow">ONE WORKSPACE. A CLEARER VIEW.</p><h2>Put your AI spend<br>under control.</h2><a class="button" href="https://app.comput.cloud/home">Open dashboard &rarr;</a><p class="note">Already have access? Sign in with your workspace credentials.</p></section>
   </main>
-  <footer class="site-footer"><a class="brand" href="#top"><span>COMPUT</span></a><p>The efficiency layer for AI compute.</p><a href="https://app.comput.cloud/home">Dashboard</a><a href="https://github.com/Saminu/alloysdk" target="_blank" rel="noopener noreferrer">GitHub</a><span>© 2026 COMPUT SDK</span></footer>
-  <script type="module" src="app.js?v=20260910-2"></script>
+  <footer><a class="brand" href="#top">COMPUT<span>.</span></a><p>Lower AI costs. Put security first.</p><a href="https://app.comput.cloud/docs">Documentation</a><a href="https://app.comput.cloud/home">Dashboard</a><small>&copy; 2026 COMPUT</small></footer>
+  <script src="cost-control.js" defer></script>
 </body>
 </html>
